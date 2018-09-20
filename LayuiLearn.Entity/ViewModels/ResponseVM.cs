@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace LayuiLearn.Entity.ViewModels
+namespace LayuiLearn.Web.Models
 {
     public class ResponseVM
     {

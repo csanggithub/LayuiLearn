@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{365C0316-E14C-46B1-BCBE-621198CE9781}</ProjectGuid>
+    <ProjectGuid>{3CD1707C-9179-433A-97BA-F921F0D0E4E2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LayuiLearn.Common</RootNamespace>
-    <AssemblyName>LayuiLearn.Common</AssemblyName>
+    <RootNamespace>LayuiLearn.IServices</RootNamespace>
+    <AssemblyName>LayuiLearn.IServices</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,14 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,16 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CryptTools.cs" />
-    <Compile Include="DESTools.cs" />
-    <Compile Include="Logging\ILogger.cs" />
-    <Compile Include="Logging\Log.cs" />
-    <Compile Include="Logging\Log4NetLogger.cs" />
+    <Compile Include="Base\IBaseServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ValidateCode.cs" />
+    <Compile Include="IUserServices.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\LayuiLearn.Entity\LayuiLearn.Entity.csproj">
+      <Project>{A438DC28-1B1D-4369-A677-02E32C38B61C}</Project>
+      <Name>LayuiLearn.Entity</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -43,7 +43,28 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.8.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.8.1\lib\net45\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mvc5.4.0.2\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MySql.Data, Version=6.9.12.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.12\lib\net45\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data.Entity.EF6, Version=6.9.12.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.Entity.6.9.12\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -88,12 +109,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\crmdb.sql" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\font.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\xadmin.css" />
-    <Content Include="crmdb.sql" />
     <Content Include="Demo\daniuit-X-admin-master\X-admin\admin-add.html" />
     <Content Include="Demo\daniuit-X-admin-master\X-admin\admin-cate.html" />
     <Content Include="Demo\daniuit-X-admin-master\X-admin\admin-edit.html" />
@@ -338,6 +359,9 @@
     <Content Include="lib\layui\lay\modules\util.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -349,6 +373,8 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Code\LoginUtil.cs" />
+    <Compile Include="App_Start\AutofacConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CaptchaController.cs" />
@@ -356,7 +382,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="LayuiLearnUser.cs" />
+    <Compile Include="Common\LayuiLearnUser.cs" />
     <Compile Include="Models\LoginVM.cs" />
     <Compile Include="Models\ResponseVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -395,13 +421,28 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Views\Captcha\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LayuiLearn.Common\LayuiLearn.Common.csproj">
       <Project>{365C0316-E14C-46B1-BCBE-621198CE9781}</Project>
       <Name>LayuiLearn.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LayuiLearn.Entity\LayuiLearn.Entity.csproj">
+      <Project>{A438DC28-1B1D-4369-A677-02E32C38B61C}</Project>
+      <Name>LayuiLearn.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LayuiLearn.IServices\LayuiLearn.IServices.csproj">
+      <Project>{3CD1707C-9179-433A-97BA-F921F0D0E4E2}</Project>
+      <Name>LayuiLearn.IServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LayuiLearn.Repository\LayuiLearn.Repository.csproj">
+      <Project>{ecf0f027-8d07-4464-bcf4-45d8725ce886}</Project>
+      <Name>LayuiLearn.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LayuiLearn.Services\LayuiLearn.Services.csproj">
+      <Project>{21ea573b-d3a1-4fa1-a592-13b59622dafc}</Project>
+      <Name>LayuiLearn.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

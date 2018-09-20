@@ -1,4 +1,5 @@
 ﻿using LayuiLearn.Common;
+using LayuiLearn.IServices;
 using LayuiLearn.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,13 @@ namespace LayuiLearn.Web.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly IUserServices _iUserServices;
+
+        public AccountController(IUserServices iUserServices)
+        {
+            _iUserServices = iUserServices;
+        }
+
         // GET: Account
         public ActionResult Index()
         {
@@ -27,6 +35,18 @@ namespace LayuiLearn.Web.Controllers
         //[ValidateAntiForgeryToken]
         public ActionResult Login(LoginVM model)
         {
+            //var user=_iUserServices.QueryWhere(a => a.Id == 0).FirstOrDefault();
+            ////_iUserServices.Add(new Entity.Models.User() {
+            ////    Account = "123",
+            ////    UserName="123",
+            ////    IdentityNo="23",
+            ////    UserPwd="123",
+            ////    StopFlag=true,
+            ////    ManagerFlag=true
+            ////});
+            //_iUserServices.Delete(user,true);
+            //_iUserServices.SaverChanges();
+            //Log.Error("出现未处理异常", "XXXXXXXError");
             var userName = model.Account;
             var password = model.Password; //DES加密密码
             if (string.IsNullOrEmpty(userName))
@@ -37,8 +57,7 @@ namespace LayuiLearn.Web.Controllers
             {
                 return JavaScript("layer.msg('请输入密码！');");
             }
-
-            var checkedPass = Session["Captcha"].ToString().ToLower() == model.ValidateCode;
+            var checkedPass = null != Session["Captcha"]&&Session["Captcha"].ToString().ToLower() == model.ValidateCode;
             //检验验证码
             if (!checkedPass)
             {
