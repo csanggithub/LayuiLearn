@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using LayuiLearn.Web;
+
 namespace LayuiLearn.Web.Controllers
 {
     public class AccountController : Controller
@@ -18,8 +19,6 @@ namespace LayuiLearn.Web.Controllers
         {
             _iUserServices = iUserServices;
         }
-
-        public object UserLogin { get; private set; }
 
         // GET: Account
         public ActionResult Index()
@@ -87,7 +86,6 @@ namespace LayuiLearn.Web.Controllers
             {
                 return JavaScript("layer.msg('用户名或密码错误！');changeCaptcha();");
             }
-            //UserLogin.WriteUser(model.Account);
             LoginUser.WriteUser(model.Account);
             FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, model.Account, DateTime.Now, DateTime.Now.Add(FormsAuthentication.Timeout), true, FormsAuthentication.FormsCookiePath);
             HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(ticket));

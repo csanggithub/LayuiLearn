@@ -7,7 +7,7 @@ using System.Web;
 
 namespace LayuiLearn.Web
 {
-    public class LoginUser : System.Web.SessionState.IRequiresSessionState
+    public class LoginUser
     {
         private static IUserServices _iUserServices;
         private static IFunctionServices _iFunctionServices;

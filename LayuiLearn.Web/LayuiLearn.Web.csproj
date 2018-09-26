@@ -374,9 +374,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Code\LoginUtil.cs" />
-    <Content Include="App_Start\UserLogin.cs" />
-    <Content Include="App_Code\LoginUser.cs" />
     <Compile Include="App_Start\AutofacConfig.cs" />
+    <Compile Include="App_Start\LoginUser.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CaptchaController.cs" />
