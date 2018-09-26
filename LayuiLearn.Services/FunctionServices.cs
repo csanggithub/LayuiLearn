@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LayuiLearn.Services
 {
-    public partial class UserFunctionServoces : BaseServices<UserFunction>, IUserFunctionServices
+    public partial class FunctionServices : BaseServices<Function>, IFunctionServices
     {
 
     }

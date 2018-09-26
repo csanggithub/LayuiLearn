@@ -1,5 +1,6 @@
 ﻿using LayuiLearn.Entity.Models;
 using LayuiLearn.IServices;
+using LayuiLearn.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,14 @@ namespace LayuiLearn.Web
 {
     public class LoginUser
     {
-        private static IUserServices _iUserServices;
-        private static IFunctionServices _iFunctionServices;
-        private static IUserFunctionServices _iUserFunctionServices;
+        private readonly IUserServices _iUserServices;
+        private readonly IFunctionServices _iFunctionServices;
+        private readonly IUserFunctionServices _iUserFunctionServices;
+
+        private static LoginUser loginUser = new LoginUser();
+        //private static UserServices userServices = new UserServices();
+        //private static FunctionServoces functionServices = new FunctionServices();
+        //private static UserFunctionServices userFunctionServices = new UserFunctionServices();
 
         public LoginUser(IUserServices iUserServices, IFunctionServices iFunctionServices, IUserFunctionServices iUserFunctionServices)
         {
@@ -72,7 +78,7 @@ namespace LayuiLearn.Web
         public static void WriteUser(string account)
         {
             LoginAdmin admin = new LoginAdmin();
-            var pubUser = _iUserServices.QueryWhere(a => a.Account == account && a.StopFlag == false).FirstOrDefault();
+            var pubUser = loginUser.GetUser(account);
             var context = HttpContext.Current;
             if (pubUser != null)
             {
@@ -80,11 +86,26 @@ namespace LayuiLearn.Web
                 admin.UserName = pubUser.UserName;
                 admin.MobilePhone = pubUser.Tel;
                 admin.DeptCode = pubUser.DeptCode;
-                var userFunction = _iUserFunctionServices.QueryWhere(a => a.StopFlag == false && a.UserCode == account);
-                var function = _iFunctionServices.QueryWhere(a => a.StopFlag && userFunction.Any(b => b.StopFlag == false && b.FunctionCode == a.FunctionCode));
+                var userFunction = loginUser.GetUserFunction(account);
+                var function = loginUser.GetFunction(userFunction);
                 admin.UserFunctions = function;
             }
             context.Session["Admin"] = admin;
+        }
+
+        private User GetUser(string account)
+        {
+            return _iUserServices.QueryWhere(a => a.Account == account && a.StopFlag == false).FirstOrDefault();
+        }
+
+        private List<UserFunction> GetUserFunction(string account)
+        {
+            return _iUserFunctionServices.QueryWhere(a => a.StopFlag == false && a.UserCode == account);
+        }
+
+        private List<Function> GetFunction(List<UserFunction> userFunction)
+        {
+            return _iFunctionServices.QueryWhere(a => a.StopFlag && userFunction.Any(b => b.StopFlag == false && b.FunctionCode == a.FunctionCode));
         }
 
 

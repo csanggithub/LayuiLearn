@@ -36,91 +36,56 @@ namespace LayuiLearn.Web.Controllers
         //[ValidateAntiForgeryToken]
         public ActionResult Login(LoginVM model)
         {
-            //var user=_iUserServices.QueryWhere(a => a.Id == 0).FirstOrDefault();
-            ////_iUserServices.Add(new Entity.Models.User() {
-            ////    Account = "123",
-            ////    UserName="123",
-            ////    IdentityNo="23",
-            ////    UserPwd="123",
-            ////    StopFlag=true,
-            ////    ManagerFlag=true
-            ////});
-            //_iUserServices.Delete(user,true);
-            //_iUserServices.SaverChanges();
-            Log.Error("出现未处理异常", "XXXXXXXError");
             if (!ModelState.IsValid)
             {
                 return JavaScript("layer.msg('必填项未填写或数据格式不正确！');");
             }
-            var userName = model.Account;
-            var password = model.Password; //DES加密密码
-            if (string.IsNullOrEmpty(userName))
+            if (string.IsNullOrEmpty(model.Account))
             {
                 return JavaScript("layer.msg('请输入用户名！');");
             }
-            if (string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(model.Password))
             {
                 return JavaScript("layer.msg('请输入密码！');");
             }
-            var checkedPass = null != Session["Captcha"]&&Session["Captcha"].ToString().ToLower() == model.ValidateCode;
-            //检验验证码
-            if (!checkedPass)
+            try
             {
-                return JavaScript("layer.msg('验证码失效或者错误！');changeCaptcha();");
+                var checkedPass = null != Session["Captcha"] && Session["Captcha"].ToString().ToLower() == model.ValidateCode;
+                //检验验证码
+                if (!checkedPass)
+                {
+                    return JavaScript("layer.msg('验证码失效或者错误！');changeCaptcha();");
+                }
+
+                //解密的密码
+                var pPassword = JsDes.UncMe(model.Password, model.LoginSecretKey);
+                //将明文密码转化为MD5加密
+                //password = CryptTools.HashPassword(pPassword);
+                //string msg;
+                //var loginResult = LoginUtil.UserLogin(StringSafeFilter.Filter(userName), StringSafeFilter.Filter(password.ToUpper()), out msg);
+
+                //if (loginResult != Entity.Enum.LoginResultEnum.LoginSuccess)
+                //{
+                //    return Json(new { Success = false, ErrorMessage = msg }, JsonRequestBehavior.AllowGet);
+                //}
+                var dbUser = _iUserServices.QueryWhere(a => a.Account == model.Account && a.UserPwd == pPassword && a.StopFlag == false).FirstOrDefault();
+                if (dbUser == null)
+                {
+                    return JavaScript("layer.msg('用户名或密码错误！');changeCaptcha();");
+                }
+                LoginUser.WriteUser(model.Account);
+                FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, model.Account, DateTime.Now, DateTime.Now.Add(FormsAuthentication.Timeout), true, FormsAuthentication.FormsCookiePath);
+                HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(ticket));
+                cookie.Domain = FormsAuthentication.CookieDomain;
+                cookie.Path = ticket.CookiePath;
+                Response.Cookies.Add(cookie);
+                return JavaScript(string.Format("window.location.href='../Home/Index'"));
             }
-
-            //解密的密码
-            var pPassword = JsDes.UncMe(password, model.LoginSecretKey);
-            //将明文密码转化为MD5加密
-            password = CryptTools.HashPassword(pPassword);
-            string msg;
-            //var loginResult = LoginUtil.UserLogin(StringSafeFilter.Filter(userName), StringSafeFilter.Filter(password.ToUpper()), out msg);
-
-            //if (loginResult != Entity.Enum.LoginResultEnum.LoginSuccess)
-            //{
-            //    return Json(new { Success = false, ErrorMessage = msg }, JsonRequestBehavior.AllowGet);
-            //}
-            //return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
-            var dbUser = _iUserServices.QueryWhere(a=>a.Account==model.Account&&a.UserPwd==model.Password&&a.StopFlag==false).FirstOrDefault();
-            if (dbUser == null)
+            catch (Exception ex)
             {
-                return JavaScript("layer.msg('用户名或密码错误！');changeCaptcha();");
+                Log.Error("出现未处理异常", ex.ToString());
+                return JavaScript("layer.msg('系统出错，请联系管理员！');");
             }
-            LoginUser.WriteUser(model.Account);
-            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, model.Account, DateTime.Now, DateTime.Now.Add(FormsAuthentication.Timeout), true, FormsAuthentication.FormsCookiePath);
-            HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(ticket));
-            cookie.Domain = FormsAuthentication.CookieDomain;
-            cookie.Path = ticket.CookiePath;
-            Response.Cookies.Add(cookie);
-            return JavaScript(string.Format("window.location.href='../Home/Index'"));
-
-
-            //string captcha = vm.Captcha;
-            //if (!ModelState.IsValid)
-            //{
-            //    return JavaScript("layer.msg('必填项未填写或数据格式不正确！');");
-            //}
-            //if (null != Session["Captcha"] && captcha.ToLower() != Session["Captcha"].ToString().ToLower())
-            //{
-            //    return JavaScript(" layer.msg('验证码不正确');changeCaptcha();");
-            //}
-            //var dbUser = vm;//userBLL.GetList(string.Format(" StopFlag=0 AND UserName='{0}' AND UserPwd='{1}' ",vm.UserCode, vm.Password)).FirstOrDefault();
-
-            //if (dbUser == null)
-            //{
-            //    return JavaScript("layer.msg('用户名或密码错误！');changeCaptcha();");
-            //}
-            ////解密的密码
-            //var pPassword = JsDes.UncMe(vm.Password, vm.LoginSecretKey);
-            ////将明文密码转化为MD5加密
-            //vm.Password=CryptTools.HashPassword(pPassword);
-            ////NBCZUser.WriteUser(vm.Account);
-            //FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, vm.Account, DateTime.Now, DateTime.Now.Add(FormsAuthentication.Timeout), true, FormsAuthentication.FormsCookiePath);
-            //HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(ticket));
-            //cookie.Domain = FormsAuthentication.CookieDomain;
-            //cookie.Path = ticket.CookiePath;
-            //Response.Cookies.Add(cookie);
-            //return JavaScript(string.Format("window.location.href='~/Home/Index'"));
         }
 
         [HttpPost]
