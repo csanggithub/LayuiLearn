@@ -11,7 +11,7 @@ using System.Web;
 
 namespace LayuiLearn.Web
 {
-    public class LoginUtil
+    public class LoginUtil : System.Web.SessionState.IRequiresSessionState
     {
         private readonly IUserServices _iUserServices;
 

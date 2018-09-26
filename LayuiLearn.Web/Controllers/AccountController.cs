@@ -7,7 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-
+using LayuiLearn.Web;
 namespace LayuiLearn.Web.Controllers
 {
     public class AccountController : Controller
@@ -18,6 +18,8 @@ namespace LayuiLearn.Web.Controllers
         {
             _iUserServices = iUserServices;
         }
+
+        public object UserLogin { get; private set; }
 
         // GET: Account
         public ActionResult Index()
@@ -46,7 +48,11 @@ namespace LayuiLearn.Web.Controllers
             ////});
             //_iUserServices.Delete(user,true);
             //_iUserServices.SaverChanges();
-            //Log.Error("出现未处理异常", "XXXXXXXError");
+            Log.Error("出现未处理异常", "XXXXXXXError");
+            if (!ModelState.IsValid)
+            {
+                return JavaScript("layer.msg('必填项未填写或数据格式不正确！');");
+            }
             var userName = model.Account;
             var password = model.Password; //DES加密密码
             if (string.IsNullOrEmpty(userName))
@@ -75,8 +81,20 @@ namespace LayuiLearn.Web.Controllers
             //{
             //    return Json(new { Success = false, ErrorMessage = msg }, JsonRequestBehavior.AllowGet);
             //}
-            return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
-
+            //return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
+            var dbUser = _iUserServices.QueryWhere(a=>a.Account==model.Account&&a.UserPwd==model.Password&&a.StopFlag==false).FirstOrDefault();
+            if (dbUser == null)
+            {
+                return JavaScript("layer.msg('用户名或密码错误！');changeCaptcha();");
+            }
+            //UserLogin.WriteUser(model.Account);
+            LoginUser.WriteUser(model.Account);
+            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, model.Account, DateTime.Now, DateTime.Now.Add(FormsAuthentication.Timeout), true, FormsAuthentication.FormsCookiePath);
+            HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(ticket));
+            cookie.Domain = FormsAuthentication.CookieDomain;
+            cookie.Path = ticket.CookiePath;
+            Response.Cookies.Add(cookie);
+            return JavaScript(string.Format("window.location.href='../Home/Index'"));
 
 
             //string captcha = vm.Captcha;

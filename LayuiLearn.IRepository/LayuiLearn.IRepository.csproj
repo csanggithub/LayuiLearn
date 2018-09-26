@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\IBaseRepository.cs" />
+    <Compile Include="IUserFunctionRepository.cs" />
+    <Compile Include="IFunctionRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IUserRepository.cs" />
   </ItemGroup>

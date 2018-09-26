@@ -21,5 +21,9 @@ namespace LayuiLearn.Services
             base.baseDal = dal;
         }
 
+        public UserServices()
+        {
+        }
+
     }
 }
