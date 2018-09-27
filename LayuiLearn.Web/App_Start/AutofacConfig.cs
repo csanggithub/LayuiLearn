@@ -34,7 +34,7 @@ namespace LayuiLearn.Web
             builder.RegisterTypes(serpAss.GetTypes()).AsImplementedInterfaces();
 
             //builder.RegisterType<RedisCacheManager>().As<ICacheManager>();
-
+            //builder.RegisterType<LoginUser>();
             //创建一个Autofac的容器
             var container = builder.Build();
 

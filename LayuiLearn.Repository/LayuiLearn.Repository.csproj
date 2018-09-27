@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\BaseRepository.cs" />
+    <Compile Include="DepartmentRepository.cs" />
     <Compile Include="UserFunctionRepository.cs" />
     <Compile Include="FunctionRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

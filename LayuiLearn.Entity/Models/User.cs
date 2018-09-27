@@ -17,9 +17,9 @@ namespace LayuiLearn.Entity.Models
         public int Id { get; set; }
 
         /// <summary>
-        /// 登录用户名
+        /// 用户编码
         /// </summary>
-        public string Account { get; set; }
+        public string UserCode { get; set; }
 
         /// <summary>
         /// 昵称/用户名

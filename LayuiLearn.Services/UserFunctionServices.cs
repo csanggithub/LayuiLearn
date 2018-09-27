@@ -1,4 +1,5 @@
 ﻿using LayuiLearn.Entity.Models;
+using LayuiLearn.IRepository;
 using LayuiLearn.IServices;
 using LayuiLearn.Services.Base;
 using System;
@@ -11,6 +12,11 @@ namespace LayuiLearn.Services
 {
     public partial class UserFunctionServices : BaseServices<UserFunction>, IUserFunctionServices
     {
-
+        IUserFunctionRepository dal;
+        public UserFunctionServices(IUserFunctionRepository dal)
+        {
+            this.dal = dal;
+            base.baseDal = dal;
+        }
     }
 }

@@ -14,10 +14,14 @@ namespace LayuiLearn.Web.Controllers
     public class AccountController : Controller
     {
         private readonly IUserServices _iUserServices;
+        private readonly IFunctionServices _iFunctionServices;
+        private readonly IUserFunctionServices _iUserFunctionServices;
 
-        public AccountController(IUserServices iUserServices)
+        public AccountController(IUserServices iUserServices, IFunctionServices iFunctionServices, IUserFunctionServices iUserFunctionServices)
         {
             _iUserServices = iUserServices;
+            _iFunctionServices = iFunctionServices;
+            _iUserFunctionServices = iUserFunctionServices;
         }
 
         // GET: Account
@@ -68,16 +72,21 @@ namespace LayuiLearn.Web.Controllers
                 //{
                 //    return Json(new { Success = false, ErrorMessage = msg }, JsonRequestBehavior.AllowGet);
                 //}
-                var dbUser = _iUserServices.QueryWhere(a => a.Account == model.Account && a.UserPwd == pPassword && a.StopFlag == false).FirstOrDefault();
+                var dbUser = _iUserServices.QueryWhere(a => a.UserName == model.Account && a.UserPwd == pPassword && a.StopFlag == false).FirstOrDefault();
                 if (dbUser == null)
                 {
                     return JavaScript("layer.msg('用户名或密码错误！');changeCaptcha();");
                 }
-                LoginUser.WriteUser(model.Account);
+                //var userFunction=_iUserFunctionServices.QueryWhere(a => a.StopFlag == false && a.UserCode == dbUser.Account);
+                //var function=_iFunctionServices.QueryWhere(a => a.StopFlag && userFunction.Any(b => b.StopFlag == false && b.FunctionCode == a.FunctionCode));
+                //LoginUser.WriteUser(dbUser, function);
+                LoginUser.WriteUser(dbUser.UserCode);
                 FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, model.Account, DateTime.Now, DateTime.Now.Add(FormsAuthentication.Timeout), true, FormsAuthentication.FormsCookiePath);
-                HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(ticket));
-                cookie.Domain = FormsAuthentication.CookieDomain;
-                cookie.Path = ticket.CookiePath;
+                HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(ticket))
+                {
+                    Domain = FormsAuthentication.CookieDomain,
+                    Path = ticket.CookiePath
+                };
                 Response.Cookies.Add(cookie);
                 return JavaScript(string.Format("window.location.href='../Home/Index'"));
             }
