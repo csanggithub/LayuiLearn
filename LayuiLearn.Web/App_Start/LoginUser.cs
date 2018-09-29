@@ -1,6 +1,5 @@
 ﻿using LayuiLearn.Entity.Models;
 using LayuiLearn.IServices;
-using LayuiLearn.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,21 +10,6 @@ namespace LayuiLearn.Web
 {
     public class LoginUser
     {
-        private readonly IUserServices _iUserServices;
-        private readonly IFunctionServices _iFunctionServices;
-        private readonly IUserFunctionServices _iUserFunctionServices;
-
-        private static LoginUser loginUser = new LoginUser();
-
-        public LoginUser(IUserServices iUserServices, IFunctionServices iFunctionServices, IUserFunctionServices iUserFunctionServices)
-        {
-            _iUserServices = DependencyResolver.Current.GetService<IUserServices>();
-            _iFunctionServices = DependencyResolver.Current.GetService<IFunctionServices>(); ;
-            _iUserFunctionServices = DependencyResolver.Current.GetService<IUserFunctionServices>(); ;
-        }
-
-        public LoginUser() { }
-
         public static string UserCode
         {
             get
@@ -71,10 +55,11 @@ namespace LayuiLearn.Web
                 return user.UserFunctions;
             }
         }
+
         public static void WriteUser(string account)
         {
             LoginAdmin admin = new LoginAdmin();
-            var pubUser = loginUser.GetUser(account);
+            var pubUser = GetUser(account);
             var context = HttpContext.Current;
             if (pubUser != null)
             {
@@ -82,29 +67,31 @@ namespace LayuiLearn.Web
                 admin.UserName = pubUser.UserName;
                 admin.MobilePhone = pubUser.Tel;
                 admin.DeptCode = pubUser.DeptCode;
-                var userFunction = loginUser.GetUserFunction(pubUser.UserCode);
-                var function = loginUser.GetFunction(userFunction);
+                var userFunction = GetUserFunction(pubUser.UserCode);
+                var function = GetFunction(userFunction);
                 admin.UserFunctions = function;
             }
             context.Session["Admin"] = admin;
         }
 
-        private User GetUser(string account)
+        private static User GetUser(string account)
         {
             var service = DependencyResolver.Current.GetService<IUserServices>();
             return service.QueryWhere(a => a.UserCode == account && a.StopFlag == false).FirstOrDefault();
         }
 
-        private List<UserFunction> GetUserFunction(string account)
+        private static List<UserFunction> GetUserFunction(string account)
         {
             var service = DependencyResolver.Current.GetService<IUserFunctionServices>();
             return service.QueryWhere(a => a.StopFlag == false && a.UserCode == account);
         }
 
-        private List<Function> GetFunction(List<UserFunction> userFunction)
+        private static List<Function> GetFunction(List<UserFunction> userFunction)
         {
             var service = DependencyResolver.Current.GetService<IFunctionServices>();
-            return service.QueryWhere(a => a.StopFlag && userFunction.Any(b => b.StopFlag == false && b.FunctionCode == a.FunctionCode));
+            var function = service.QueryWhere(a => a.StopFlag == false).ToList();
+            var functionCodes = function.Select(a => a.FunctionCode).ToList();
+            return function.Where(a => a.StopFlag == false && functionCodes.Contains(a.FunctionCode)).ToList();
         }
 
 

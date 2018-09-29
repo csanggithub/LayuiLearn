@@ -66,8 +66,10 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserFunction.cs" />
     <Compile Include="Models\UserRole.cs" />
+    <Compile Include="Models\UserRoleExt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\LoginVM.cs" />
+    <Compile Include="ViewModels\MenuVM.cs" />
     <Compile Include="ViewModels\ResponseVM.cs" />
   </ItemGroup>
   <ItemGroup>

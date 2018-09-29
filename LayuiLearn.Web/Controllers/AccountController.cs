@@ -54,12 +54,12 @@ namespace LayuiLearn.Web.Controllers
             }
             try
             {
-                var checkedPass = null != Session["Captcha"] && Session["Captcha"].ToString().ToLower() == model.ValidateCode;
-                //检验验证码
-                if (!checkedPass)
-                {
-                    return JavaScript("layer.msg('验证码失效或者错误！');changeCaptcha();");
-                }
+                //var checkedPass = null != Session["Captcha"] && Session["Captcha"].ToString().ToLower() == model.ValidateCode;
+                ////检验验证码
+                //if (!checkedPass)
+                //{
+                //    return JavaScript("layer.msg('验证码失效或者错误！');changeCaptcha();");
+                //}
 
                 //解密的密码
                 var pPassword = JsDes.UncMe(model.Password, model.LoginSecretKey);
@@ -105,7 +105,7 @@ namespace LayuiLearn.Web.Controllers
             Session.RemoveAll();
             Session["Admin"] = null;
             FormsAuthentication.SignOut();
-            return JavaScript(string.Format("window.location.href='../Login/Index'"));
+            return JavaScript(string.Format("window.location.href='../Account/Login'"));
         }
     }
 }

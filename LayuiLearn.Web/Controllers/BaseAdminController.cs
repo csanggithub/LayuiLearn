@@ -69,7 +69,7 @@ namespace LayuiLearn.Web.Controllers
             try
             {
 
-                string viewPath = string.Format("~/Areas/Admin/Views/{0}/{1}.cshtml", RouteData.Values["controller"], RouteData.Values["action"]);
+                string viewPath = string.Format("~/Views/{0}/{1}.cshtml", RouteData.Values["controller"], RouteData.Values["action"]);
 
                 return base.View(viewPath, masterName, model);
             }
