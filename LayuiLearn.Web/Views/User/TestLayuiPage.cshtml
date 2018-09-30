@@ -1,0 +1,104 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8" />
+    <link rel="stylesheet" href="~/Content/font.css">
+    <link rel="stylesheet" href="~/Content/xadmin.css">
+    <script type="text/javascript" src="~/Scripts/jquery-3.2.1.min.js"></script>
+    <script src="~/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="~/Scripts/xadmin.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <table class="layui-hide" id="test" lay-filter="demo"></table>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+    <script type="text/javascript">
+        //分页参数设置 这些全局变量关系到分页的功能
+        //var startAllAppoint = 0;//开始页数    这个可以省略
+        var pageSize = 8;//每页显示数据条数
+        var currentPageNo = 1;//当前页数
+        var dataLength = 0;//数据总条数
+        var type =2;
+        var teid = 3;
+        var testqq = 4;
+        //分页控件
+        layui.use(['laydate', 'layer', 'table', 'carousel', 'upload', 'element'], function () {
+            var laypage = layui.laypage //分页
+                , layer = layui.layer //弹层
+                , table = layui.table //表格
+                , element = layui.element; //元素操作
+
+
+            //执行一个 table 实例
+            table.render({
+                elem: '#test'
+                , height: 532
+                , url: '@Url.Action("TestLayuiPageList")'   //这里的url是自己写的一个js   引入js到这个页面就行例：var URL = "http://192.168.0.106:8080/website";
+                , method: 'POST'   //laui 修改请求方式
+                , request: {
+                    pageName: 'currentPageNo' //页码的参数名称，默认：page
+                    , limitName: 'pageSize' //每页数据量的参数名，默认：limit
+                }
+                , response: {
+                    statusName: 'code' //数据状态的字段名称，默认：code
+                    , countName: 'count' //数据总数的字段名称，默认：count
+                    , dataName: 'data' //默数据列表的字段名称，认：data        //我返回的datas集合
+
+                }
+                , where: {
+                    teid: teid,
+                    tname: type,
+                    testqq: testqq
+                }
+                , page: true //开启分页
+                , cols: [[ //表头
+                    { field: 'Id', title: 'ID' }
+                    , { field: 'UserName', title: '标题' }
+                    , { field: 'Phone', title: '父标题' }                    //这里的field 的值是json数据里要展示的字段
+                    , { field: 'WeiXin', title: '描述' }
+                    , { field: 'QQ', title: '深度' }
+                    , { fixed: 'right', width: 165, align: 'center', toolbar: '#barDemo' }
+                ]]
+                , done: function (res, curr, count) {
+                    this.where = {};
+                }
+            });
+            //监听工具条
+            table.on('tool(demo)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                var data = obj.data //获得当前行数据
+                    , layEvent = obj.event; //获得 lay-event 对应的值
+
+                if (layEvent === 'detail') {
+                    layer.msg('查看操作');
+                } else if (layEvent === 'del') {
+                    layer.confirm('真的删除行么', function (index) {
+
+                        obj.del(); //删除对应行（tr）的DOM结构
+                        layer.close(index);
+                        //向服务端发送删除指令
+
+                    });
+                } else if (layEvent === 'edit') {
+                    layer.msg('编辑操作');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
