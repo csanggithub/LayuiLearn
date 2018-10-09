@@ -37,13 +37,30 @@ namespace LayuiLearn.Web.Controllers
             return View();
         }
 
+        public ActionResult TestLayuiPageQuery()
+        {
+            return View();
+        }
+
+        public ActionResult TestLayuiPageQuery2()
+        {
+            return View();
+        }
+
+        public ActionResult UserListInfo()
+        {
+            return View();
+        }
+
         public  ActionResult TestLayuiPageList()
         {
-            var page = 10;//Convert.ToInt32(Request.QueryString["page"]);
+            //var page = Convert.ToInt32(Request.QueryString["page"]);
             //var limit = Convert.ToInt32(Request.QueryString["limit"]);
             //var teid = Convert.ToInt32(Request.QueryString["teid"]);
             //var tname = Convert.ToInt32(Request.QueryString["tname"]);
             //var testqq = Convert.ToInt32(Request.QueryString["testqq"]);
+            var page = Convert.ToInt32(Request.Form["page"]);
+            var limit = Convert.ToInt32(Request.Form["limit"]);
             var teid = Convert.ToInt32(Request.Form["teid"]);
             var tname = Convert.ToInt32(Request.Form["tname"]);
             var testqq = Convert.ToInt32(Request.Form["testqq"]);

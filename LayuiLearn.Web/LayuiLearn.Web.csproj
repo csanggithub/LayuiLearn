@@ -542,6 +542,10 @@
     <Content Include="Views\Home\MyDesktop.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\TestLayuiPage.cshtml" />
+    <Content Include="Views\User\TestLayuiPageQuery1.cshtml" />
+    <Content Include="Views\User\TestLayuiPageQuery.cshtml" />
+    <Content Include="Views\User\TestLayuiPageQuery2.cshtml" />
+    <Content Include="Views\User\UserListInfo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
