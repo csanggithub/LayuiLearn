@@ -11,7 +11,7 @@ using LayuiLearn.Web;
 
 namespace LayuiLearn.Web.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseAdminController
     {
         private readonly IUserServices _iUserServices;
         private readonly IFunctionServices _iFunctionServices;
