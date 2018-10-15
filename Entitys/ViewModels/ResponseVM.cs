@@ -22,6 +22,8 @@ namespace Entitys.ViewModels
 
         public bool IsSuccess { get; set; }
 
+        public int Count { get; set; }
+
         public T Data { get; set; }
     }
 }

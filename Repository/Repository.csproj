@@ -55,6 +55,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\BaseRepository.cs" />
+    <Compile Include="DistrictInfoRepository.cs" />
+    <Compile Include="DepartmentInfoRepository.cs" />
+    <Compile Include="ClassifyInfoRepository.cs" />
+    <Compile Include="PlatformInfoRepository.cs" />
+    <Compile Include="ProjectInfoRepository.cs" />
+    <Compile Include="ResourceDataInfoRepository.cs" />
     <Compile Include="DepartmentRepository.cs" />
     <Compile Include="UserFunctionRepository.cs" />
     <Compile Include="FunctionRepository.cs" />

@@ -42,6 +42,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\BaseServices.cs" />
+    <Compile Include="DistrictInfoServices.cs" />
+    <Compile Include="DepartmentInfoServices.cs" />
+    <Compile Include="ClassifyInfoServices.cs" />
+    <Compile Include="PlatformInfoServices.cs" />
+    <Compile Include="ProjectInfoServices.cs" />
+    <Compile Include="ResourceDataInfoServices.cs" />
     <Compile Include="DepartmentServices.cs" />
     <Compile Include="UserFunctionServices.cs" />
     <Compile Include="FunctionServices.cs" />

@@ -65,6 +65,31 @@ namespace Entitys.DBConfig
         /// 地市信息
         /// </summary>
         public DbSet<DistrictInfo> DistrictInfos { get; set; }
-        
+
+        /// <summary>
+        /// 资源数据信息
+        /// </summary>
+        public DbSet<ResourceDataInfo> ResourceDataInfos { get; set; }
+
+        /// <summary>
+        /// 项目信息
+        /// </summary>
+        public DbSet<ProjectInfo> ProjectInfos { get; set; }
+
+        /// <summary>
+        /// 平台信息
+        /// </summary>
+        public DbSet<PlatformInfo> PlatformInfos { get; set; }
+
+        /// <summary>
+        /// 分类信息
+        /// </summary>
+        public DbSet<ClassifyInfo> ClassifyInfos { get; set; }
+
+        /// <summary>
+        /// 部门信息
+        /// </summary>
+        public DbSet<DepartmentInfo> DepartmentInfos { get; set; }
+
     }
 }

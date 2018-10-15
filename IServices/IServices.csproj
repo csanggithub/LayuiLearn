@@ -43,6 +43,12 @@
   <ItemGroup>
     <Compile Include="Base\IBaseServices.cs" />
     <Compile Include="IDepartmentServices.cs" />
+    <Compile Include="IPlatformInfoServices.cs" />
+    <Compile Include="IDepartmentInfoServices.cs" />
+    <Compile Include="IClassifyInfoServices.cs" />
+    <Compile Include="IDistrictInfoServices.cs" />
+    <Compile Include="IProjectInfoServices.cs" />
+    <Compile Include="IResourceDataInfoServices.cs" />
     <Compile Include="IUserFunctionServices.cs" />
     <Compile Include="IFunctionServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -42,7 +42,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\IBaseRepository.cs" />
+    <Compile Include="IClassifyInfoRepository.cs" />
+    <Compile Include="IDepartmentInfoRepository.cs" />
     <Compile Include="IDepartmentRepository.cs" />
+    <Compile Include="IDistrictInfoRepository.cs" />
+    <Compile Include="IPlatformInfoRepository.cs" />
+    <Compile Include="IProjectInfoRepository.cs" />
+    <Compile Include="IResourceDataInfoRepository.cs" />
     <Compile Include="IUserFunctionRepository.cs" />
     <Compile Include="IFunctionRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

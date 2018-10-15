@@ -8,7 +8,7 @@ using System.Web.DynamicData;
 
 namespace Entitys.Models
 {
-    [TableName("districtinfo")]
+    [TableName("districtinfos")]
     public class DistrictInfo
     {
         /// <summary>
@@ -18,9 +18,9 @@ namespace Entitys.Models
         public int Id { get; set; }
 
         /// <summary>
-        /// 地市名称
+        /// 地区名称
         /// </summary>
-        public string Name { get; set; }
+        public string DistrictName { get; set; }
 
         /// <summary>
         /// 父级Id
