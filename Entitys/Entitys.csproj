@@ -76,6 +76,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\LoginVM.cs" />
     <Compile Include="ViewModels\MenuVM.cs" />
+    <Compile Include="ViewModels\RegionInfoVM.cs" />
     <Compile Include="ViewModels\ResponseVM.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Common;
+using Entitys.ViewModels;
+using IServices;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +11,13 @@ namespace Web.Controllers
 {
     public class UserController : BaseAdminController
     {
+
+        private readonly IDistrictInfoServices _iDistrictInfoServices;
+
+        public UserController(IDistrictInfoServices iDistrictInfoServices)
+        {
+            _iDistrictInfoServices = iDistrictInfoServices;
+        }
         // GET: User
         public ActionResult Index()
         {
@@ -16,6 +26,37 @@ namespace Web.Controllers
         public ActionResult PCA()
         {
             return View();
+        }
+
+        /// <summary>
+        /// 获取地区信息
+        /// </summary>
+        /// <param name="areaCode"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult GetAreaList(int areaCode = 0)
+        {
+            try
+            {
+                var districtList = _iDistrictInfoServices.QueryWhere(p => p.Pid == areaCode).ToList();
+                var vm = new List<RegionInfoVM>();
+                if (districtList != null && districtList.Any())
+                {
+                    vm = districtList.Select(p => new RegionInfoVM()
+                    {
+                        Pid = p.Pid,
+                        RegionCode = p.Id,
+                        RegionName = p.DistrictName
+                    }).ToList();
+                }
+                return Json(vm, JsonRequestBehavior.DenyGet);
+                
+            }
+            catch(Exception ex)
+            {
+                Log.Error("获取地区列表出现未处理异常", ex.ToString());
+                return Json(new List<RegionInfoVM>(), JsonRequestBehavior.DenyGet);
+            }
         }
 
         public  ActionResult UserList()
