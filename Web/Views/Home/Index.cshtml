@@ -1,4 +1,4 @@
-﻿@model List<LayuiLearn.Entity.ViewModels.MenuVM>
+﻿@model List<Entitys.ViewModels.MenuVM>
 @{
     ViewBag.Title = "Index";
     Layout = null;
@@ -100,7 +100,7 @@
     <!-- 底部结束 -->
     <script type="text/javascript">
        function logOut() {
-           $.post("@Url.ActionAdmin("LogOut", "Account")",function () {
+           $.post("@Url.Action("LogOut", "Account")",function () {
 
            })
        }

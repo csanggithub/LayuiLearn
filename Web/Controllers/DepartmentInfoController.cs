@@ -9,7 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using Web;
 
-namespace LayuiLearn.Web.Controllers
+namespace Web.Controllers
 {
     public class DepartmentInfoController : BaseAdminController
     {

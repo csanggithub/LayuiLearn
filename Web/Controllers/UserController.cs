@@ -6,10 +6,14 @@ using System.Web.Mvc;
 
 namespace Web.Controllers
 {
-    public class UserController : Controller
+    public class UserController : BaseAdminController
     {
         // GET: User
         public ActionResult Index()
+        {
+            return View();
+        }
+        public ActionResult PCA()
         {
             return View();
         }

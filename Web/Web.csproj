@@ -11,8 +11,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LayuiLearn.Web</RootNamespace>
-    <AssemblyName>LayuiLearn.Web</AssemblyName>
+    <RootNamespace>Web</RootNamespace>
+    <AssemblyName>Web</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -123,6 +123,8 @@
     <Content Include="App_Data\crmdb.sql" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Demo\daniuit-X-admin-master\X-admin\lib\三级联动.html" />
+    <Content Include="Scripts\citys.js" />
     <Content Include="Content\font.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\xadmin.css" />
@@ -481,6 +483,7 @@
     <Content Include="lib\layui\font\iconfont.eot" />
     <Content Include="lib\layui\font\iconfont.ttf" />
     <Content Include="lib\layui\font\iconfont.woff" />
+    <Content Include="Demo\area.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -554,6 +557,7 @@
     <Content Include="Views\PlatformInfo\Index.cshtml" />
     <Content Include="Views\DepartmentInfo\Index.cshtml" />
     <Content Include="Views\ClassifyInfo\Index.cshtml" />
+    <Content Include="Views\User\PCA.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

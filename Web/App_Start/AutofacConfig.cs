@@ -19,17 +19,17 @@ namespace Web
         {
             //实例化一个autofac的创建容器
             var builder = new ContainerBuilder();
-            //告诉Autofac框架，将来要创建的控制器类存放在哪个程序集 (LayuiLearn.Web)
-            Assembly controllerAss = Assembly.Load("LayuiLearn.Web");
+            //告诉Autofac框架，将来要创建的控制器类存放在哪个程序集 (Web)
+            Assembly controllerAss = Assembly.Load("Web");
             builder.RegisterControllers(controllerAss);
 
             //告诉autofac框架注册数据仓储层所在程序集中的所有类的对象实例
-            Assembly respAss = Assembly.Load("LayuiLearn.Repository");
+            Assembly respAss = Assembly.Load("Repository");
             //创建respAss中的所有类的instance以此类的实现接口存储
             builder.RegisterTypes(respAss.GetTypes()).AsImplementedInterfaces();
 
             //告诉autofac框架注册业务逻辑层所在程序集中的所有类的对象实例
-            Assembly serpAss = Assembly.Load("LayuiLearn.Services");
+            Assembly serpAss = Assembly.Load("Services");
             //创建serAss中的所有类的instance以此类的实现接口存储
             builder.RegisterTypes(serpAss.GetTypes()).AsImplementedInterfaces();
 

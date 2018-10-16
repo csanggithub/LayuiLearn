@@ -17,19 +17,19 @@ namespace Entitys.DBConfig
 
         }
 
-        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        //{
-        //    //移除表名为复数
-        //    modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-        //    //自动添加实现EntityTypeConfiguration的类
-        //    modelBuilder.Configurations.AddFromAssembly(Assembly.GetExecutingAssembly());
-        //    base.OnModelCreating(modelBuilder);
-        //}
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            //移除表名为复数
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            //自动添加实现EntityTypeConfiguration的类
+            modelBuilder.Configurations.AddFromAssembly(Assembly.GetExecutingAssembly());
+            base.OnModelCreating(modelBuilder);
+        }
 
         /// <summary>
         /// 用户表
         /// </summary>
-        public DbSet<User> User { get; set; }
+        public DbSet<User> Users { get; set; }
 
         /// <summary>
         /// 部门表

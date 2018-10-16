@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace LayuiLearn.Web
+namespace Web
 {
     public class MvcApplication : System.Web.HttpApplication
     {

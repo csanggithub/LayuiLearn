@@ -3,85 +3,101 @@
     ViewBag.Title = "UserListInfo";
 }
 
-<body>
-    <div class="x-nav">
-        <span class="layui-breadcrumb">
-            <a href="">首页</a>
-            <a href="">演示</a>
-            <a>
-                <cite>导航元素</cite>
-            </a>
-        </span>
-        <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
-            <i class="layui-icon" style="line-height:30px">ဂ</i>
-        </a>
-    </div>
-    <div class="x-body">
-        <div class="layui-row">
-            <div class="layui-form layui-col-md12 x-so">
-                <input class="layui-input" placeholder="开始日" name="start" id="start">
-                <input class="layui-input" placeholder="截止日" name="end" id="end">
-                <div class="layui-input-inline">
-                    <select name="">
-                        <option>支付状态</option>
-                        <option>已支付</option>
-                        <option>未支付</option>
-                    </select>
+
+<div class="x-nav">
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i>
+    </a>
+</div>
+<div class="x-body">
+    <div class="layui-form layui-row">
+        <form class="layui-form" action="javascript:;">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">姓名：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="username" placeholder="请输入姓名" autocomplete="off" class="layui-input" id="userName">
+                    </div>
                 </div>
-                <div class="layui-input-inline">
-                    <select name="contrller">
-                        <option>支付方式</option>
-                        <option>支付宝</option>
-                        <option>微信</option>
-                        <option>货到付款</option>
-                    </select>
+                <div class="layui-inline">
+                    <label class="layui-form-label">账号：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="username" placeholder="请输入账号" autocomplete="off" class="layui-input" id="accountName">
+                    </div>
                 </div>
-                <div class="layui-input-inline">
-                    <select name="contrller">
-                        <option value="">订单状态</option>
-                        <option value="0">待确认</option>
-                        <option value="1">已确认</option>
-                        <option value="2">已收货</option>
-                        <option value="3">已取消</option>
-                        <option value="4">已完成</option>
-                        <option value="5">已作废</option>
-                    </select>
+                <div class="layui-inline">
+                    <label class="layui-form-label">是否在职</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" checked="" name="open" id="isOnTheJob" lay-skin="switch" lay-filter="switchTest" lay-text="是|否">
+                    </div>
                 </div>
-                <div class="layui-input-inline">
-                    <select name="contrller">
-                        <option value="">订单状态</option>
-                        <option value="0">待确认</option>
-                        <option value="1">已确认</option>
-                        <option value="2">已收货</option>
-                        <option value="3">已取消</option>
-                        <option value="4">已完成</option>
-                        <option value="5">已作废</option>
-                    </select>
+                <div class="layui-inline">
+                    <label class="layui-form-label">部门：</label>
+                    <div class="layui-input-inline">
+                        <select name="contrller">
+                            <option value="">订单状态</option>
+                            <option value="0">待确认</option>
+                            <option value="1">已确认</option>
+                            <option value="2">已收货</option>
+                            <option value="3">已取消</option>
+                            <option value="4">已完成</option>
+                            <option value="5">已作废</option>
+                        </select>
+                    </div>
                 </div>
-                <input type="text" name="username" placeholder="请输入订单号" autocomplete="off" class="layui-input" id="demoReload">
-                <input type="text" name="username" placeholder="请输入订单号" autocomplete="off" class="layui-input" id="demoReload1">
-                <input type="text" name="username" placeholder="请输入订单号" autocomplete="off" class="layui-input" id="demoReload2">
-                <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                <div class="layui-inline">
+                    <label class="layui-form-label">省份：</label>
+                    <div class="layui-input-inline">
+                        <select name="province" id="province" lay-filter="test"></select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">城市：</label>
+                    <div class="layui-input-inline">
+                        <select name="city" id="city" lay-filter="test1"></select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">区域：</label>
+                    <div class="layui-input-inline">
+                        <select name="area" id="area"></select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">创建日期：</label>
+                    <div class="layui-input-inline">
+                        <input class="layui-input" placeholder="开始日" name="start" id="start">
+                    </div>
+                    <div class="layui-input-inline">
+                        <input class="layui-input" placeholder="截止日" name="end" id="end">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                    </div>
+                </div>
             </div>
-        </div>
-        <table class="layui-hide" id="LAY_table_user" lay-filter="user"></table>
+        </form>
+
     </div>
-    <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    </script>
-    <script type="text/html" id="toolbarDemo">
-        <div class="layui-btn-container">
-            <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-            <button class="layui-btn" onclick="x_admin_show('添加用户','./order-add.html')"><i class="layui-icon"></i>添加</button>
-        </div>
-    </script>
-    <script type="text/javascript">
-        layui.use(['laydate','table'], function () {
+    <table class="layui-hide" id="LAY_table_user" lay-filter="user"></table>
+</div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+        <button class="layui-btn" onclick="x_admin_show('添加用户','./order-add.html')"><i class="layui-icon"></i>添加</button>
+    </div>
+</script>
+<script type="text/javascript">
+    layui.use(['form','laydate','table'], function () {
             var laydate = layui.laydate,
                 table = layui.table;
-
             //方法级渲染
             table.render({
                 elem: '#LAY_table_user'
@@ -182,6 +198,126 @@
             laydate.render({
                 elem: '#end' //指定元素
             });
+    });
+
+    layui.use(['form','laydate','table'], function () {
+            var laydate = layui.laydate,
+                table = layui.table,
+                $ = layui.jquery,
+                form = layui.form;
+
+        var selDate = {
+            "area": [
+                { "regionName": '成华区', "regionCode": "001" },
+                { "regionName": '武侯区', "regionCode": "002" },
+                { "regionName": '青羊区', "regionCode": "003" },
+                { "regionName": '高新区', "regionCode": "004" },
+                { "regionName": '锦江区', "regionCode": "005" }
+            ],
+            "street": [
+                { "regionName": '成华区1', "regionCode": "001" },
+                { "regionName": '成华区2', "regionCode": "002" },
+                { "regionName": '成华区3', "regionCode": "003" },
+                { "regionName": '成华区4', "regionCode": "004" },
+                { "regionName": '成华区5', "regionCode": "005" }
+            ],
+            "place": [
+                { "regionName": '街道1', "regionCode": "001" },
+                { "regionName": '街道2', "regionCode": "002" },
+                { "regionName": '街道3', "regionCode": "003" },
+                { "regionName": '街道4', "regionCode": "004" },
+                { "regionName": '街道5', "regionCode": "005" }
+            ]
+        };
+        // 一级联动事件触发
+        form.on('select(test)', function (data) {
+            var value = data.value;
+            areaState.area.fn(value);
+        });
+
+        // 二级联动事件触发
+        form.on('select(test1)', function (data) {
+            var value = data.value;
+            areaState.street.fn(value);
+        });
+
+        //ajax 方法封装，也可直接写在areaState对象里面
+        // function areaGet(fn){
+        //   $.ajax({
+        //     suc:function(data){
+        //       fn(data)
+        //     }
+        //   })
+        // }
+
+        var areaState = {
+            area: {
+                state: false,
+                data: [],
+                fn: function (value) { // value 表示的是区域代码，及传到后台的数据
+                    this.state = true;
+                    areaState.street.state = false;
+                    areaState.place.state = false;
+
+                    // 从后台调用真实接口
+                    // get(function(data){
+                    //    areaState.street.data = data;
+                    //    console.log(areaState.street.data);
+                    //    addSelect('street select',areaState.street.data,false,'regionCode','regionName');
+                    // }
+
+                    areaState.street.data = selDate.street;
+                    if (value !== '') {
+                        addSelect('city', areaState.street.data, true, 'regionCode', 'regionName');
+                    } else {
+                        $('#city').html('');
+                        $('#area').html('');
+                        form.render("select");
+                    }
+
+                }
+            },
+            street: {
+                state: false,
+                data: [],
+                fn: function (value) {
+                    this.state = true;
+                    areaState.place.state = false;
+
+                    areaState.place.data = selDate.place;
+                    if (value !== '') {
+                        addSelect('area', areaState.place.data, true, 'regionCode', 'regionName');
+                    } else {
+                        $('#area').html('');
+                        form.render("select");
+                    }
+                }
+            },
+            place: {
+                state: false,
+                data: [],
+                fn: function () {
+                    this.state = true;
+                }
+            }
+        };
+
+        //select添加选项
+        function addSelect(id, data, bool, val, text, region) {//bool是否添加“请选择”选项
+            val = val || 'type';
+            text = text || 'name';
+            var d = "'" + region + "'";
+            var html = '';
+            var $id = $('#' + id);
+            $id.html('');
+            if (bool) { html += '<option value="">请选择</option>'; }
+            for (var i in data) {
+                html += '<option value="' + data[i][val] + '">' + data[i][text] + '</option>';
+            }
+            $id.html(html);
+            form.render("select");
+        }
+        addSelect('province', selDate.area, true, 'regionCode', 'regionName');
         });
 
         /*用户-停用*/
@@ -229,6 +365,6 @@
                 $(".layui-form-checked").not('.header').parents('tr').remove();
             });
         }
-    </script>
-</body>
+</script>
+
 
