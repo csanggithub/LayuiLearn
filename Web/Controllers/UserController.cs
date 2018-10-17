@@ -23,10 +23,6 @@ namespace Web.Controllers
         {
             return View();
         }
-        public ActionResult PCA()
-        {
-            return View();
-        }
 
         /// <summary>
         /// 获取地区信息
@@ -57,6 +53,11 @@ namespace Web.Controllers
                 Log.Error("获取地区列表出现未处理异常", ex.ToString());
                 return Json(new List<RegionInfoVM>(), JsonRequestBehavior.DenyGet);
             }
+        }
+
+        public ActionResult PCA()
+        {
+            return View();
         }
 
         public  ActionResult UserList()
@@ -94,6 +95,16 @@ namespace Web.Controllers
 
         public ActionResult UserListInfo()
         {
+            var deptList = new List<Dept>();
+            deptList.Add(new Dept { DeptCode = "001", DeptName = "技术部" });
+            deptList.Add(new Dept { DeptCode = "002", DeptName = "人事部" });
+            deptList.Add(new Dept { DeptCode = "003", DeptName = "行政部" });
+            deptList.Add(new Dept { DeptCode = "004", DeptName = "运维部" });
+            deptList.Add(new Dept { DeptCode = "005", DeptName = "销售部" });
+            deptList.Add(new Dept { DeptCode = "006", DeptName = "IT部" });
+            deptList.Add(new Dept { DeptCode = "007", DeptName = "客服部" });
+            var selectList = new SelectList(deptList, "DeptCode", "DeptName", "006");
+            ViewBag.DepartmentSelectList = selectList;
             return View();
         }
 
@@ -151,5 +162,11 @@ namespace Web.Controllers
         public string SourceLink { get; set; }
         public string Remark { get; set; }
 
+    }
+
+    public class Dept
+    {
+        public string DeptCode { get; set; }
+        public string DeptName { get; set; }
     }
 }

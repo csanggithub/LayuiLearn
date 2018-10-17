@@ -492,6 +492,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\des.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
+    <Content Include="Scripts\region.js" />
     <Content Include="Scripts\xadmin.js" />
     <Content Include="Scripts\xcity.js" />
     <Content Include="Web.config" />

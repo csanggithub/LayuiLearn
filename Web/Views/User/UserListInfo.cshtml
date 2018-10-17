@@ -3,7 +3,6 @@
     ViewBag.Title = "UserListInfo";
 }
 
-
 <div class="x-nav">
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
         <i class="layui-icon" style="line-height:30px">ဂ</i>
@@ -12,7 +11,7 @@
 <div class="x-body">
     <div class="layui-form layui-row">
         <form class="layui-form" action="javascript:;">
-            <div class="layui-form-item">
+            <div class="layui-form-item" id="select-seach">
                 <div class="layui-inline">
                     <label class="layui-form-label">姓名：</label>
                     <div class="layui-input-inline">
@@ -34,33 +33,27 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">部门：</label>
                     <div class="layui-input-inline">
-                        <select name="contrller">
-                            <option value="">订单状态</option>
-                            <option value="0">待确认</option>
-                            <option value="1">已确认</option>
-                            <option value="2">已收货</option>
-                            <option value="3">已取消</option>
-                            <option value="4">已完成</option>
-                            <option value="5">已作废</option>
-                        </select>
+                        @Html.DropDownList("DeptCode", ViewBag.DepartmentSelectList as SelectList, new { id = "department" })
                     </div>
                 </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label">省份：</label>
-                    <div class="layui-input-inline">
-                        <select name="province" id="province" lay-filter="province"></select>
+                <div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">省份：</label>
+                        <div class="layui-input-inline">
+                            <select name="province" id="province" lay-filter="province"></select>
+                        </div>
                     </div>
-                </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label">城市：</label>
-                    <div class="layui-input-inline">
-                        <select name="city" id="city" lay-filter="city"></select>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">城市：</label>
+                        <div class="layui-input-inline">
+                            <select name="city" id="city" lay-filter="city"></select>
+                        </div>
                     </div>
-                </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label">区域：</label>
-                    <div class="layui-input-inline">
-                        <select name="area" id="area"></select>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">县/区：</label>
+                        <div class="layui-input-inline">
+                            <select name="area" id="area" lay-filter="area"></select>
+                        </div>
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -85,268 +78,168 @@
 </div>
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    {{#  if(d.Id ==17){ }}
+
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+     {{#  } }}
+    @*<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>*@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
-<script type="text/html" id="toolbarDemo">
+@*<script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
         <button class="layui-btn" onclick="x_admin_show('添加用户','./order-add.html')"><i class="layui-icon"></i>添加</button>
     </div>
-</script>
+</script>*@
 <script type="text/javascript">
-    layui.use(['form','laydate','table'], function () {
-            var laydate = layui.laydate,
-                table = layui.table;
-            //方法级渲染
-            table.render({
-                elem: '#LAY_table_user'
-                , url: '@Url.Action("TestLayuiPageList")'
-                , method: 'POST'
-                , title: '用户数据表'
-                , toolbar: '#toolbarDemo'
-                , cols: [[ //表头
-                    { checkbox: true, fixed: true }
-                    ,{ field: 'Id', title: 'ID' }
-                    , { field: 'UserName', title: '标题' }
-                    , { field: 'Phone', title: '父标题' }                    //这里的field 的值是json数据里要展示的字段
-                    , { field: 'WeiXin', title: '描述' }
-                    , { field: 'QQ', title: '深度' }
-                    , { fixed: 'right', width: 165, align: 'center', toolbar: '#barDemo' }
-                ]]
-                , id: 'testReload'
-                , page: true
-                , height: 531
-            });
-
-            var $ = layui.$, active = {
-                reload: function () {
-                    var demoReload = $('#demoReload');
-                    var demoReload1 = $('#demoReload1');
-                    var demoReload2 = $('#demoReload2');
-
-                    //执行重载
-                    table.reload('testReload', {
-                        page: {
-                            curr: 1 //重新从第 1 页开始
-                        }
-                        , where: {
-                            //key: {
-                            //    teid: demoReload.val(),
-                            //    tname: demoReload.val(),
-                            //    testqq: demoReload.val()
-                            //}
-                            teid: demoReload.val(),
-                            tname: demoReload1.val(),
-                            testqq: demoReload2.val()
-                        }
-                    });
-                }
-            };
-
-            $('.layui-row .layui-form .layui-btn').on('click', function () {
-                var type = $(this).data('type');
-                active[type] ? active[type].call(this) : '';
-            });
-
-            //头工具栏事件
-            table.on('toolbar(LAY_table_user)', function (obj) {
-                var checkStatus = table.checkStatus(obj.config.id);
-                switch (obj.event) {
-                    case 'getCheckData':
-                        var data = checkStatus.data;
-                        layer.alert(JSON.stringify(data));
-                        break;
-                    case 'getCheckLength':
-                        var data = checkStatus.data;
-                        layer.msg('选中了：' + data.length + ' 个');
-                        break;
-                    case 'isAll':
-                        layer.msg(checkStatus.isAll ? '全选' : '未全选');
-                        break;
-                };
-            });
-
-            //监听行工具事件
-            table.on('tool(LAY_table_user)', function (obj) {
-                var data = obj.data;
-                //console.log(obj)
-                if (obj.event === 'del') {
-                    layer.confirm('真的删除行么', function (index) {
-                        obj.del();
-                        layer.close(index);
-                    });
-                } else if (obj.event === 'edit') {
-                    layer.prompt({
-                        formType: 2
-                        , value: data.email
-                    }, function (value, index) {
-                        obj.update({
-                            email: value
-                        });
-                        layer.close(index);
-                    });
-                }
-            });
-
-            //执行一个laydate实例
-            laydate.render({
-                elem: '#start' //指定元素
-            });
-
-            //执行一个laydate实例
-            laydate.render({
-                elem: '#end' //指定元素
-            });
-    });
-
-    
-
-        /*用户-停用*/
-        function member_stop(obj, id) {
-            layer.confirm('确认要停用吗？', function (index) {
-
-                if ($(obj).attr('title') == '启用') {
-
-                    //发异步把用户状态进行更改
-                    $(obj).attr('title', '停用')
-                    $(obj).find('i').html('&#xe62f;');
-
-                    $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                    layer.msg('已停用!', { icon: 5, time: 1000 });
-
-                } else {
-                    $(obj).attr('title', '启用')
-                    $(obj).find('i').html('&#xe601;');
-
-                    $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
-                    layer.msg('已启用!', { icon: 5, time: 1000 });
-                }
-
-            });
-        }
-
-        /*用户-删除*/
-        function member_del(obj, id) {
-            layer.confirm('确认要删除吗？', function (index) {
-                //发异步删除数据
-                $(obj).parents("tr").remove();
-                layer.msg('已删除!', { icon: 1, time: 1000 });
-            });
-        }
-
-
-
-        function delAll(argument) {
-
-            var data = tableCheck.getData();
-
-            layer.confirm('确认要删除吗？' + data, function (index) {
-                //捉到所有被选中的，发异步进行删除
-                layer.msg('删除成功', { icon: 1 });
-                $(".layui-form-checked").not('.header').parents('tr').remove();
-            });
-        }
-</script>
-<script type="text/javascript">
-    layui.use(['form'], function () {
-        var $ = layui.jquery,
-            form = layui.form;
-        // 一级联动事件触发
-        form.on('select(province)', function (data) {
-            var value = data.value;
-            areaState.area.fn(value);
+    layui.use(['form', 'laydate', 'table'], function () {
+        var laydate = layui.laydate,
+            $ = layui.jquery,
+            table = layui.table;
+        $('#select-seach').region();//省市区县下拉列表 select lay-filter name id 属性值 为必须 "province/city/area"
+        //方法级渲染
+        table.render({
+            elem: '#LAY_table_user'
+            , url: '@Url.Action("TestLayuiPageList")'
+            , method: 'POST'
+            , title: '用户数据表'
+            , toolbar: '#toolbarDemo'
+            , cols: [[ //表头
+                { checkbox: true, fixed: true }
+                , { field: 'Id', title: 'ID' }
+                , { field: 'UserName', title: '标题' }
+                , { field: 'Phone', title: '父标题' }                    //这里的field 的值是json数据里要展示的字段
+                , { field: 'WeiXin', title: '描述' }
+                , { field: 'QQ', title: '深度' }
+                //, { fixed: 'right', width: 165, align: 'center', toolbar: '#barDemo' }
+                //, { fixed: 'right', width: 165, align: 'center', toolbar: '#barDemo' }
+                , {
+                    fixed: 'right', width: 165, align: 'center', templet: function (d) {
+                        var html = "";
+                        html += '<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a><a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>';
+                        html += '<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>';
+                        return html;
+                    } }
+            ]]
+            , id: 'testReload'
+            , page: true
+            , height: 531
         });
 
-        // 二级联动事件触发
-        form.on('select(city)', function (data) {
-            var value = data.value;
-            areaState.street.fn(value);
-        });
-        var areaState = {
-            area: {
-                state: false,
-                data: [],
-                fn: function (value) {
-                    this.state = true;
-                    areaState.street.state = false;
-                    areaState.place.state = false;
-                    var str = GetAreaList(value);
-                    areaState.street.data = str;//selDate.street;
-                    if (value !== '') {
-                        addSelect('city', areaState.street.data, true, 'RegionCode', 'RegionName');
-                    } else {
-                        $('#city').html('');
-                        $('#area').html('');
-                        form.render("select");
+        var $ = layui.$, active = {
+            reload: function () {
+                var demoReload = $('#demoReload');
+                var demoReload1 = $('#demoReload1');
+                var demoReload2 = $('#demoReload2');
+                //执行重载
+                table.reload('testReload', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
                     }
-                }
-            },
-            street: {
-                state: false,
-                data: [],
-                fn: function (value) {
-                    this.state = true;
-                    areaState.place.state = false;
-                    var str = GetAreaList(value);
-                    areaState.place.data = str;
-                    if (value !== '') {
-                        addSelect('area', areaState.place.data, true, 'RegionCode', 'RegionName');
-                    } else {
-                        $('#area').html('');
-                        form.render("select");
+                    , where: {
+                        //key: {
+                        //    teid: demoReload.val(),
+                        //    tname: demoReload.val(),
+                        //    testqq: demoReload.val()
+                        //}
+                        teid: demoReload.val(),
+                        tname: demoReload1.val(),
+                        testqq: demoReload2.val()
                     }
-                }
-            },
-            place: {
-                state: false,
-                data: [],
-                fn: function () {
-                    this.state = true;
-                }
+                });
             }
         };
 
-        function addSelect(id, data, bool, val, text, region) {//bool是否添加“请选择”选项
-            val = val || 'type';
-            text = text || 'name';
-            var d = "'" + region + "'";
-            var html = '';
-            var $id = $('#' + id);
-            $id.html('');
-            if (bool) { html += '<option value="">请选择</option>'; }
-            var jsonObj = JSON.parse(data);
-            for (var i = 0; i < jsonObj.length; i++) {
-                html += '<option value="' + jsonObj[i].RegionCode + '">' + jsonObj[i].RegionName + '</option>';
-            }
-            $id.html(html);
-            form.render("select");
-        }
-        var provinceData = GetAreaList(0);
-        addSelect('province', provinceData, true, 'RegionCode', 'RegionName');
-    });
+        $('.layui-row .layui-form .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
 
-    function GetAreaList(areaCode) {
-        var jsonStr;
-        $.ajax({
-            type: "POST",
-            url:  '@Url.Action("GetAreaList","User")',
-            data: { areaCode: areaCode },
-            async: false,
-            datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
-            beforeSend: function () {  },
-            success: function (data) {
-                jsonStr = data;
-                alert(jsonStr);
-            },
-            complete: function (XMLHttpRequest, textStatus) {
-                //alert(XMLHttpRequest.responseText);
-                //alert(textStatus);
-            },
-            error: function () {
+        //头工具栏事件
+        table.on('toolbar(LAY_table_user)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                    break;
+                case 'getCheckLength':
+                    var data = checkStatus.data;
+                    layer.msg('选中了：' + data.length + ' 个');
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选' : '未全选');
+                    break;
+            };
+        });
+
+        //监听行工具事件
+        table.on('tool(LAY_table_user)', function (obj) {
+            var data = obj.data;
+            //console.log(obj)
+            if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
+                    obj.del();
+                    layer.close(index);
+                });
+            } else if (obj.event === 'edit') {
+                layer.prompt({
+                    formType: 2
+                    , value: data.email
+                }, function (value, index) {
+                    obj.update({
+                        email: value
+                    });
+                    layer.close(index);
+                    });
             }
         });
-        return jsonStr;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#start' //指定元素
+        });
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#end' //指定元素
+        });
+    });
+
+    /*用户-停用*/
+    function member_stop(obj, id) {
+        layer.confirm('确认要停用吗？', function (index) {
+            if ($(obj).attr('title') == '启用') {
+                //发异步把用户状态进行更改
+                $(obj).attr('title', '停用')
+                $(obj).find('i').html('&#xe62f;');
+                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
+                layer.msg('已停用!', { icon: 5, time: 1000 });
+            } else {
+                $(obj).attr('title', '启用')
+                $(obj).find('i').html('&#xe601;');
+                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
+                layer.msg('已启用!', { icon: 5, time: 1000 });
+            }
+        });
+    }
+
+    /*用户-删除*/
+    function member_del(obj, id) {
+        layer.confirm('确认要删除吗？', function (index) {
+            //发异步删除数据
+            $(obj).parents("tr").remove();
+            layer.msg('已删除!', { icon: 1, time: 1000 });
+        });
+    }
+
+    function delAll(argument) {
+        var data = tableCheck.getData();
+        layer.confirm('确认要删除吗？' + data, function (index) {
+            //捉到所有被选中的，发异步进行删除
+            layer.msg('删除成功', { icon: 1 });
+            $(".layui-form-checked").not('.header').parents('tr').remove();
+        });
     }
 </script>
 
