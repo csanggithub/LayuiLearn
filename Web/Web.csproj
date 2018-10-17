@@ -484,6 +484,7 @@
     <Content Include="lib\layui\font\iconfont.ttf" />
     <Content Include="lib\layui\font\iconfont.woff" />
     <Content Include="Demo\area.json" />
+    <Content Include="App_Data\area.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
