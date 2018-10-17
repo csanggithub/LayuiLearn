@@ -73,9 +73,14 @@ namespace Web.Controllers
             {
                 var page = Convert.ToInt32(Request.Form["page"]);
                 var limit = Convert.ToInt32(Request.Form["limit"]);
-                var teid = Convert.ToInt32(Request.Form["teid"]);
-                var tname = Convert.ToInt32(Request.Form["tname"]);
-                var testqq = Convert.ToInt32(Request.Form["testqq"]);
+                var province = Convert.ToInt32(Request.Form["province"]);
+                var city = Convert.ToInt32(Request.Form["city"]);
+                var area = Convert.ToInt32(Request.Form["area"]);
+                var deptCode = Convert.ToInt32(Request.Form["deptCode"]);
+                var userName = Convert.ToInt32(Request.Form["userName"]);
+                var accountName = Convert.ToInt32(Request.Form["accountName"]);
+                var startTime = Convert.ToInt32(Request.Form["startTime"]);
+                var endTime = Convert.ToInt32(Request.Form["endTime"]);
 
                 //var list = _iUserServices.QueryByPage(page, limit,);
                 return JavaScript("layer.msg('系统出错，请联系管理员！');");
