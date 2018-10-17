@@ -252,30 +252,6 @@
     layui.use(['form'], function () {
         var $ = layui.jquery,
             form = layui.form;
-
-        var selDate = {
-            "area": [
-                { "regionName": '成华区', "regionCode": "001" },
-                { "regionName": '武侯区', "regionCode": "002" },
-                { "regionName": '青羊区', "regionCode": "003" },
-                { "regionName": '高新区', "regionCode": "004" },
-                { "regionName": '锦江区', "regionCode": "005" }
-            ],
-            "street": [
-                { "regionName": '成华区1', "regionCode": "001" },
-                { "regionName": '成华区2', "regionCode": "002" },
-                { "regionName": '成华区3', "regionCode": "003" },
-                { "regionName": '成华区4', "regionCode": "004" },
-                { "regionName": '成华区5', "regionCode": "005" }
-            ],
-            "place": [
-                { "regionName": '街道1', "regionCode": "001" },
-                { "regionName": '街道2', "regionCode": "002" },
-                { "regionName": '街道3', "regionCode": "003" },
-                { "regionName": '街道4', "regionCode": "004" },
-                { "regionName": '街道5', "regionCode": "005" }
-            ]
-        };
         // 一级联动事件触发
         form.on('select(province)', function (data) {
             var value = data.value;
@@ -287,31 +263,14 @@
             var value = data.value;
             areaState.street.fn(value);
         });
-
-        //ajax 方法封装，也可直接写在areaState对象里面
-        // function areaGet(fn){
-        //   $.ajax({
-        //     suc:function(data){
-        //       fn(data)
-        //     }
-        //   })
-        // }
-
         var areaState = {
             area: {
                 state: false,
                 data: [],
-                fn: function (value) { // value 表示的是区域代码，及传到后台的数据
+                fn: function (value) {
                     this.state = true;
                     areaState.street.state = false;
                     areaState.place.state = false;
-
-                    // 从后台调用真实接口
-                    // get(function(data){
-                    //    areaState.street.data = data;
-                    //    console.log(areaState.street.data);
-                    //    addSelect('street select',areaState.street.data,false,'regionCode','regionName');
-                    // }
                     var str = GetAreaList(value);
                     areaState.street.data = str;//selDate.street;
                     if (value !== '') {
@@ -321,7 +280,6 @@
                         $('#area').html('');
                         form.render("select");
                     }
-
                 }
             },
             street: {
@@ -331,7 +289,7 @@
                     this.state = true;
                     areaState.place.state = false;
                     var str = GetAreaList(value);
-                    areaState.place.data = str;//selDate.place;
+                    areaState.place.data = str;
                     if (value !== '') {
                         addSelect('area', areaState.place.data, true, 'RegionCode', 'RegionName');
                     } else {
@@ -349,7 +307,6 @@
             }
         };
 
-        //select添加选项
         function addSelect(id, data, bool, val, text, region) {//bool是否添加“请选择”选项
             val = val || 'type';
             text = text || 'name';
@@ -358,7 +315,7 @@
             var $id = $('#' + id);
             $id.html('');
             if (bool) { html += '<option value="">请选择</option>'; }
-            var jsonObj = JSON.parse(data);//转换为json对象
+            var jsonObj = JSON.parse(data);
             for (var i = 0; i < jsonObj.length; i++) {
                 html += '<option value="' + jsonObj[i].RegionCode + '">' + jsonObj[i].RegionName + '</option>';
             }
@@ -366,38 +323,27 @@
             form.render("select");
         }
         var provinceData = GetAreaList(0);
-        //addSelect('province', selDate.area, true, 'regionCode', 'regionName');
         addSelect('province', provinceData, true, 'RegionCode', 'RegionName');
     });
 
     function GetAreaList(areaCode) {
         var jsonStr;
         $.ajax({
-            //提交数据的类型 POST GET
             type: "POST",
-            //提交的网址
             url:  '@Url.Action("GetAreaList","User")',
-            //提交的数据
             data: { areaCode: areaCode },
-            //使用同步的方式,true为异步方式 默认true
             async: false,
-            //返回数据的格式
             datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
-            //在请求之前调用的函数
             beforeSend: function () {  },
-            //成功返回之后调用的函数             
             success: function (data) {
                 jsonStr = data;
                 alert(jsonStr);
             },
-            //调用执行后调用的函数
             complete: function (XMLHttpRequest, textStatus) {
                 //alert(XMLHttpRequest.responseText);
                 //alert(textStatus);
             },
-            //调用出错执行的函数
             error: function () {
-                //请求出错处理
             }
         });
         return jsonStr;
