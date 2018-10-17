@@ -10,7 +10,7 @@
 				this.state = true;
 				areaState.street.state = false;
 				areaState.place.state = false;
-				var str = GetAreaList(value);
+				var str = GetRegionJson(value);
 				areaState.street.data = str;//selDate.street;
 				if (value !== '') {
 					addSelect('city', areaState.street.data, true, 'RegionCode', 'RegionName');
@@ -27,7 +27,7 @@
 			fn: function (value) {
 				this.state = true;
 				areaState.place.state = false;
-				var str = GetAreaList(value);
+				var str = GetRegionJson(value);
 				areaState.place.data = str;
 				if (value !== '') {
 					addSelect('area', areaState.place.data, true, 'RegionCode', 'RegionName');
@@ -61,7 +61,7 @@
 		$id.html(html);
 		form.render("select");
 	}
-	var provinceData = GetAreaList(0);
+	var provinceData = GetRegionJson(0);
 	addSelect('province', provinceData, true, 'RegionCode', 'RegionName');
 
 	// 一级联动事件触发
@@ -77,11 +77,11 @@
 		areaState.street.fn(value);
 	});
 }
-function GetAreaList(areaCode) {
+function GetRegionJson(areaCode) {
 	var jsonStr;
 	$.ajax({
 		type: "POST",
-		url: "GetAreaList",//'@Url.Action("GetAreaList","User")',
+		url: "GetRegionJson",//'@Url.Action("GetAreaList","User")',
 		data: { areaCode: areaCode },
 		async: false,
 		datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".

@@ -13,15 +13,12 @@ namespace Web.Controllers
     {
 
         private readonly IDistrictInfoServices _iDistrictInfoServices;
+        private readonly IUserServices _iUserServices;
 
-        public UserController(IDistrictInfoServices iDistrictInfoServices)
+        public UserController(IDistrictInfoServices iDistrictInfoServices, IUserServices iUserServices)
         {
             _iDistrictInfoServices = iDistrictInfoServices;
-        }
-        // GET: User
-        public ActionResult Index()
-        {
-            return View();
+            _iUserServices = iUserServices;
         }
 
         /// <summary>
@@ -30,7 +27,7 @@ namespace Web.Controllers
         /// <param name="areaCode"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult GetAreaList(int areaCode = 0)
+        public ActionResult GetRegionJson(int areaCode = 0)
         {
             try
             {
@@ -55,12 +52,52 @@ namespace Web.Controllers
             }
         }
 
+        public ActionResult UserInfoList()
+        {
+            var deptList = new List<Dept>();
+            deptList.Add(new Dept { DeptCode = "001", DeptName = "技术部" });
+            deptList.Add(new Dept { DeptCode = "002", DeptName = "人事部" });
+            deptList.Add(new Dept { DeptCode = "003", DeptName = "行政部" });
+            deptList.Add(new Dept { DeptCode = "004", DeptName = "运维部" });
+            deptList.Add(new Dept { DeptCode = "005", DeptName = "销售部" });
+            deptList.Add(new Dept { DeptCode = "006", DeptName = "IT部" });
+            deptList.Add(new Dept { DeptCode = "007", DeptName = "客服部" });
+            var selectList = new SelectList(deptList, "DeptCode", "DeptName", "006");
+            ViewBag.DepartmentSelectList = selectList;
+            return View();
+        }
+
+        public ActionResult GetUserInfoList()
+        {
+            try
+            {
+                var page = Convert.ToInt32(Request.Form["page"]);
+                var limit = Convert.ToInt32(Request.Form["limit"]);
+                var teid = Convert.ToInt32(Request.Form["teid"]);
+                var tname = Convert.ToInt32(Request.Form["tname"]);
+                var testqq = Convert.ToInt32(Request.Form["testqq"]);
+
+                //var list = _iUserServices.QueryByPage(page, limit,);
+                return JavaScript("layer.msg('系统出错，请联系管理员！');");
+            }
+            catch (Exception ex)
+            {
+                Log.Error("用户列表出现未处理异常", ex.ToString());
+                return JavaScript("layer.msg('系统出错，请联系管理员！');");
+            }
+        }
+
+        public ActionResult Index()
+        {
+            return View();
+        }
+
         public ActionResult PCA()
         {
             return View();
         }
 
-        public  ActionResult UserList()
+        public  ActionResult GetUserListInfo()
         {
             var page =Convert.ToInt32( Request.QueryString["page"]);
             var limit = Convert.ToInt32(Request.QueryString["limit"]);
@@ -121,9 +158,9 @@ namespace Web.Controllers
             var tname = Convert.ToInt32(Request.Form["tname"]);
             var testqq = Convert.ToInt32(Request.Form["testqq"]);
             var vm = new List<UserInfo>();
-            for (int i = page * 10 + 1; i <= page * 10 + 10; i++)
+            for (int i = 1; i <= limit; i++)
             {
-                vm.Add(new UserInfo() { Id = i + 1, UserName = "张三" + i, Phone = "13725748394", City = "广州", WeiXin = "微信", QQ = "1236253", CanalType = "58同城", ForumType = "58客服", KeyWord = "烧腊加盟", ProvinceName = "广东", DepartmentName = "网络部", ProjectName = "和福记", CraateUserName = "某某人", IsLowerHair = "是", LowerHairTime = "2018-09-29", SourceLink = "http://www.mxm.com", Remark = "已经处理" });
+                vm.Add(new UserInfo() { Id = (page-1) * 10 + i, UserName = "张三" + i, Phone = "13725748394", City = "广州", WeiXin = "微信", QQ = "1236253", CanalType = "58同城", ForumType = "58客服", KeyWord = "烧腊加盟", ProvinceName = "广东", DepartmentName = "网络部", ProjectName = "和福记", CraateUserName = "某某人", IsLowerHair = "是", LowerHairTime = "2018-09-29", SourceLink = "http://www.mxm.com", Remark = "已经处理" });
             }
             var ro = new ResultObject<UserInfo>();
             ro.code = 0;

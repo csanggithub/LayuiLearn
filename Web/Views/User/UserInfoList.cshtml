@@ -1,8 +1,7 @@
 ﻿
 @{
-    ViewBag.Title = "UserListInfo";
+    ViewBag.Title = "用户列表";
 }
-
 <div class="x-nav">
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
         <i class="layui-icon" style="line-height:30px">ဂ</i>
@@ -13,21 +12,21 @@
         <form class="layui-form" action="javascript:;">
             <div class="layui-form-item" id="select-seach">
                 <div class="layui-inline">
-                    <label class="layui-form-label">姓名：</label>
+                    <label class="layui-form-label">省份：</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="username" placeholder="请输入姓名" autocomplete="off" class="layui-input" id="userName">
+                        <select name="province" id="province" lay-filter="province"></select>
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">账号：</label>
+                    <label class="layui-form-label">城市：</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="username" placeholder="请输入账号" autocomplete="off" class="layui-input" id="accountName">
+                        <select name="city" id="city" lay-filter="city"></select>
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">是否在职</label>
-                    <div class="layui-input-block">
-                        <input type="checkbox" checked="" name="open" id="isOnTheJob" lay-skin="switch" lay-filter="switchTest" lay-text="是|否">
+                    <label class="layui-form-label">县/区：</label>
+                    <div class="layui-input-inline">
+                        <select name="area" id="area" lay-filter="area"></select>
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -36,38 +35,36 @@
                         @Html.DropDownList("DeptCode", ViewBag.DepartmentSelectList as SelectList, new { id = "department" })
                     </div>
                 </div>
-                <div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label">省份：</label>
-                        <div class="layui-input-inline">
-                            <select name="province" id="province" lay-filter="province"></select>
-                        </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">姓名：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="userName" placeholder="请输入姓名" autocomplete="off" class="layui-input" id="userName">
                     </div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label">城市：</label>
-                        <div class="layui-input-inline">
-                            <select name="city" id="city" lay-filter="city"></select>
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label">县/区：</label>
-                        <div class="layui-input-inline">
-                            <select name="area" id="area" lay-filter="area"></select>
-                        </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">账号：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="accountName" placeholder="请输入账号" autocomplete="off" class="layui-input" id="accountName">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">创建日期：</label>
                     <div class="layui-input-inline">
-                        <input class="layui-input" placeholder="开始日" name="start" id="start">
+                        <input class="layui-input" placeholder="开始日" name="startTime" id="startTime">
                     </div>
                     <div class="layui-input-inline">
-                        <input class="layui-input" placeholder="截止日" name="end" id="end">
+                        <input class="layui-input" placeholder="截止日" name="endTime" id="endTime">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">是否在职</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" checked="" name="isOnTheJob" id="isOnTheJob" lay-skin="switch" lay-filter="isOnTheJob" lay-text="是|否">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <div class="layui-input-inline">
-                        <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                        <button class="layui-btn" lay-submit="" lay-filter="sreach" id="sreach"><i class="layui-icon">&#xe615;</i></button>
                     </div>
                 </div>
             </div>
@@ -76,15 +73,6 @@
     </div>
     <table class="layui-hide" id="LAY_table_user" lay-filter="user"></table>
 </div>
-@*<script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-    {{#  if(d.Id ==17){ }}
-
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-     {{#  } }}
-    @*<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-</script>*@
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
@@ -100,23 +88,35 @@
         //方法级渲染
         table.render({
             elem: '#LAY_table_user'
-            , url: '@Url.Action("TestLayuiPageList")'
+            , url: '@Url.Action("GetUserInfoList")'
             , method: 'POST'
             , title: '用户数据表'
             , toolbar: '#toolbarDemo'
             , cols: [[ //表头
                 { checkbox: true, fixed: true }
                 , { field: 'Id', title: 'ID' }
-                , { field: 'UserName', title: '标题' }
-                , { field: 'Phone', title: '父标题' }                    //这里的field 的值是json数据里要展示的字段
-                , { field: 'WeiXin', title: '描述' }
-                , { field: 'QQ', title: '深度' }
-                //, { fixed: 'right', width: 165, align: 'center', toolbar: '#barDemo' }
-                //, { fixed: 'right', width: 165, align: 'center', toolbar: '#barDemo' }
+                , { field: 'UserCode', title: '用户编码' }
+                , { field: 'RealName', title: '姓名' }
+                , { field: 'UserName', title: '账号' }
+                , { field: 'Sex', title: '性别' }
+                , { field: 'IdentityNo', title: '身份证号码' }
+                , { field: 'Birthday', title: '生日' }
+                , { field: 'DeptCode', title: '部门' }
+                , { field: 'ManagerFlag', title: '是否管理员' }
+                , { field: 'Tel', title: '电话' }
+                , { field: 'EMail', title: '邮箱' }
+                , { field: 'QQ', title: 'QQ' }
+                , { field: 'Remark', title: '备注' }
+                , { field: 'StopFlag', title: '是否停用' }
+                , { field: 'ProvinceCode', title: '省份' }
+                , { field: 'CityCode', title: '城市' }
+                , { field: 'RegionCode', title: '区\县' }
+                , { field: 'UserAddress', title: '地址' }
                 , {
                     fixed: 'right', width: 165, align: 'center', templet: function (d) {
                         var html = "";
-                        html += '<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a><a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>';
+                        html += '<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看+{{d.Id}}</a>';
+                        html += '<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>';
                         html += '<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>';
                         return html;
                     } }
@@ -128,29 +128,34 @@
 
         var $ = layui.$, active = {
             reload: function () {
-                var demoReload = $('#demoReload');
-                var demoReload1 = $('#demoReload1');
-                var demoReload2 = $('#demoReload2');
+                var province = $('#province').val();
+                var city = $('#city').val();
+                var area = $('#area').val();
+                var deptCode = $('#DeptCode').val();
+                var userName = $('#userName').val();
+                var accountName = $('#accountName').val();
+                var startTime = $('#startTime').val();
+                var endTime = $('#endTime').val();
                 //执行重载
                 table.reload('userTable', {
                     page: {
                         curr: 1 //重新从第 1 页开始
                     }
                     , where: {
-                        //key: {
-                        //    teid: demoReload.val(),
-                        //    tname: demoReload.val(),
-                        //    testqq: demoReload.val()
-                        //}
-                        teid: demoReload.val(),
-                        tname: demoReload1.val(),
-                        testqq: demoReload2.val()
+                        province: province,
+                        city: city,
+                        area: area,
+                        deptCode: deptCode,
+                        userName: userName,
+                        accountName: accountName,
+                        startTime: startTime,
+                        endTime: endTime
                     }
                 });
             }
         };
 
-        $('.layui-row .layui-form .layui-btn').on('click', function () {
+        $('#sreach').on('click', function () {
             var type = $(this).data('type');
             active[type] ? active[type].call(this) : '';
         });
@@ -197,12 +202,12 @@
 
         //执行一个laydate实例
         laydate.render({
-            elem: '#start' //指定元素
+            elem: '#startTime' //指定元素
         });
 
         //执行一个laydate实例
         laydate.render({
-            elem: '#end' //指定元素
+            elem: '#endTime' //指定元素
         });
     });
 
@@ -242,5 +247,4 @@
         });
     }
 </script>
-
 

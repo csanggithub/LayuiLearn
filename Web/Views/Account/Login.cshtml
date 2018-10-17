@@ -34,7 +34,7 @@
             <input class="layui-input" name="Password" id="txtPassword" placeholder="密码" lay-verify="required" type="password" autocomplete="off">
         </div>
         <div class="layui-form-item form_code">
-            <input class="layui-input" name="Captcha" placeholder="验证码" lay-verify="required" type="text" autocomplete="off" id="txtValidateCode">
+            <input class="layui-input" name="Captcha" placeholder="验证码" value="1" lay-verify="required" type="text" autocomplete="off" id="txtValidateCode">
             <div class="code">
                 <img width="116" id="imgCaptcha" height="36" alt="点击刷新" title="点击刷新" src="@Url.Action("Index", "Captcha", new { Area = "" })" style="vertical-align:middle;" onclick="this.src='@Url.Action("Index", "Captcha", new { Area = "" })?ts='+new Date()">
             </div>
