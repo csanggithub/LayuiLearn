@@ -279,7 +279,6 @@
         // 一级联动事件触发
         form.on('select(province)', function (data) {
             var value = data.value;
-            alert(GetAreaList(0));
             areaState.area.fn(value);
         });
 
@@ -313,10 +312,10 @@
                     //    console.log(areaState.street.data);
                     //    addSelect('street select',areaState.street.data,false,'regionCode','regionName');
                     // }
-
-                    areaState.street.data = selDate.street;
+                    var str = GetAreaList(value);
+                    areaState.street.data = str;//selDate.street;
                     if (value !== '') {
-                        addSelect('city', areaState.street.data, true, 'regionCode', 'regionName');
+                        addSelect('city', areaState.street.data, true, 'RegionCode', 'RegionName');
                     } else {
                         $('#city').html('');
                         $('#area').html('');
@@ -331,10 +330,10 @@
                 fn: function (value) {
                     this.state = true;
                     areaState.place.state = false;
-
-                    areaState.place.data = selDate.place;
+                    var str = GetAreaList(value);
+                    areaState.place.data = str;//selDate.place;
                     if (value !== '') {
-                        addSelect('area', areaState.place.data, true, 'regionCode', 'regionName');
+                        addSelect('area', areaState.place.data, true, 'RegionCode', 'RegionName');
                     } else {
                         $('#area').html('');
                         form.render("select");
@@ -359,21 +358,49 @@
             var $id = $('#' + id);
             $id.html('');
             if (bool) { html += '<option value="">请选择</option>'; }
-            for (var i in data) {
-                html += '<option value="' + data[i][val] + '">' + data[i][text] + '</option>';
+            var jsonObj = JSON.parse(data);//转换为json对象
+            for (var i = 0; i < jsonObj.length; i++) {
+                html += '<option value="' + jsonObj[i].RegionCode + '">' + jsonObj[i].RegionName + '</option>';
             }
             $id.html(html);
             form.render("select");
         }
-        addSelect('province', selDate.area, true, 'regionCode', 'regionName');
+        var provinceData = GetAreaList(0);
+        //addSelect('province', selDate.area, true, 'regionCode', 'regionName');
+        addSelect('province', provinceData, true, 'RegionCode', 'RegionName');
     });
 
     function GetAreaList(areaCode) {
-        var model = { areaCode: areaCode };
-        var actionUrl = '@Url.Action("GetAreaList","User")';
-        $.post(actionUrl, model, function (result) {
-            return result;
+        var jsonStr;
+        $.ajax({
+            //提交数据的类型 POST GET
+            type: "POST",
+            //提交的网址
+            url:  '@Url.Action("GetAreaList","User")',
+            //提交的数据
+            data: { areaCode: areaCode },
+            //使用同步的方式,true为异步方式 默认true
+            async: false,
+            //返回数据的格式
+            datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
+            //在请求之前调用的函数
+            beforeSend: function () {  },
+            //成功返回之后调用的函数             
+            success: function (data) {
+                jsonStr = data;
+                alert(jsonStr);
+            },
+            //调用执行后调用的函数
+            complete: function (XMLHttpRequest, textStatus) {
+                //alert(XMLHttpRequest.responseText);
+                //alert(textStatus);
+            },
+            //调用出错执行的函数
+            error: function () {
+                //请求出错处理
+            }
         });
+        return jsonStr;
     }
 </script>
 
