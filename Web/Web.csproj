@@ -562,6 +562,7 @@
     <Content Include="Views\ClassifyInfo\Index.cshtml" />
     <Content Include="Views\User\PCA.cshtml" />
     <Content Include="Views\User\UserInfoList.cshtml" />
+    <Content Include="Views\User\EditUserInfo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,9 +1,11 @@
 ﻿using Common;
+using Entitys.Models;
 using Entitys.ViewModels;
 using IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -52,6 +54,10 @@ namespace Web.Controllers
             }
         }
 
+        /// <summary>
+        /// 用户列表
+        /// </summary>
+        /// <returns></returns>
         public ActionResult UserInfoList()
         {
             var deptList = new List<Dept>();
@@ -67,29 +73,68 @@ namespace Web.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 获取用户列表
+        /// </summary>
+        /// <returns></returns>
         public ActionResult GetUserInfoList()
         {
             try
             {
                 var page = Convert.ToInt32(Request.Form["page"]);
                 var limit = Convert.ToInt32(Request.Form["limit"]);
-                var province = Convert.ToInt32(Request.Form["province"]);
-                var city = Convert.ToInt32(Request.Form["city"]);
-                var area = Convert.ToInt32(Request.Form["area"]);
-                var deptCode = Convert.ToInt32(Request.Form["deptCode"]);
-                var userName = Convert.ToInt32(Request.Form["userName"]);
-                var accountName = Convert.ToInt32(Request.Form["accountName"]);
-                var startTime = Convert.ToInt32(Request.Form["startTime"]);
-                var endTime = Convert.ToInt32(Request.Form["endTime"]);
-
-                //var list = _iUserServices.QueryByPage(page, limit,);
-                return JavaScript("layer.msg('系统出错，请联系管理员！');");
+                var provinceCode = Request.Form["province"];
+                var cityCode = Request.Form["city"];
+                var areaCode = Request.Form["area"];
+                var deptCode = Request.Form["deptCode"];
+                var userName = Request.Form["userName"];
+                var accountName = Request.Form["accountName"];
+                var startTime = Request.Form["startTime"];
+                var endTime = Request.Form["endTime"];
+                int total = 0;
+                var list = _iUserServices.GetUsersByWheres( page,  limit,  provinceCode,  cityCode,  areaCode,  deptCode,  userName,  accountName,  startTime,  endTime, out  total);
+                var ro = new ResultObject<User>();
+                ro.code = 0;
+                ro.msg = "";
+                ro.count = total;
+                ro.data = list;
+                return Json(ro, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 Log.Error("用户列表出现未处理异常", ex.ToString());
                 return JavaScript("layer.msg('系统出错，请联系管理员！');");
             }
+        }
+
+        /// <summary>
+        /// 编辑用户信息
+        /// </summary>
+        /// <param name="from"></param>
+        /// <returns></returns>
+        public ActionResult EditUserInfo(int Id=0)
+        {
+            var deptList = new List<Dept>();
+            deptList.Add(new Dept { DeptCode = "001", DeptName = "技术部" });
+            deptList.Add(new Dept { DeptCode = "002", DeptName = "人事部" });
+            deptList.Add(new Dept { DeptCode = "003", DeptName = "行政部" });
+            deptList.Add(new Dept { DeptCode = "004", DeptName = "运维部" });
+            deptList.Add(new Dept { DeptCode = "005", DeptName = "销售部" });
+            deptList.Add(new Dept { DeptCode = "006", DeptName = "IT部" });
+            deptList.Add(new Dept { DeptCode = "007", DeptName = "客服部" });
+            var selectList = new SelectList(deptList, "DeptCode", "DeptName", "006");
+            ViewBag.DepartmentSelectList = selectList;
+            return View();
+        }
+
+        /// <summary>
+        /// 保存用户信息
+        /// </summary>
+        /// <param name="from"></param>
+        /// <returns></returns>
+        public ActionResult SaveUserInfo(FormCollection from)
+        {
+            return View();
         }
 
         public ActionResult Index()
