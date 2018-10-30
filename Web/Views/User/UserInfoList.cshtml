@@ -63,7 +63,7 @@
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">是否在职</label>
+                    <label class="layui-form-label">是否在职：</label>
                     <div class="layui-input-block">
                         <input type="checkbox" checked="" name="isOnTheJob" id="isOnTheJob" lay-skin="switch" lay-filter="isOnTheJob" lay-text="是|否">
                     </div>
@@ -99,24 +99,38 @@
             , toolbar: '#toolbarDemo'
             , cols: [[ //表头
                 { checkbox: true, fixed: true }
-                , { field: 'Id', title: 'ID' }
-                , { field: 'UserCode', title: '用户编码' }
+                , { field: 'Id', title: 'ID', width: 80}
+                //, { field: 'UserCode', title: '用户编码' }
                 , { field: 'RealName', title: '姓名' }
                 , { field: 'UserName', title: '账号' }
-                , { field: 'Sex', title: '性别' }
-                , { field: 'IdentityNo', title: '身份证号码' }
-                , { field: 'Birthday', title: '生日' }
+                , {
+                    field: 'Sex', title: '性别', width: 60, templet: function (d) {
+                        if (d.Sex) {
+                            return "男";
+                        }
+                        return "女";
+                    }
+                }
+                //, { field: 'IdentityNo', title: '身份证号码' }
+                //, { field: 'Birthday', title: '生日' }
                 , { field: 'DeptCode', title: '部门' }
-                , { field: 'ManagerFlag', title: '是否管理员' }
-                , { field: 'Tel', title: '电话' }
-                , { field: 'EMail', title: '邮箱' }
-                , { field: 'QQ', title: 'QQ' }
-                , { field: 'Remark', title: '备注' }
-                , { field: 'StopFlag', title: '是否停用' }
+                , {
+                    field: 'ManagerFlag', title: '是否管理员', templet: function (d) {
+                        if (d.ManagerFlag) {
+                            return "是";
+                        }
+                        return "否";
+                    }
+                }
+                , { field: 'Tel', title: '电话', width:115 }
+                //, { field: 'EMail', title: '邮箱' }
+                //, { field: 'QQ', title: 'QQ' }
+                //, { field: 'StopFlag', title: '是否停用' }
                 , { field: 'ProvinceCode', title: '省份' }
                 , { field: 'CityCode', title: '城市' }
                 , { field: 'RegionCode', title: '区\县' }
-                , { field: 'UserAddress', title: '地址' }
+                //, { field: 'UserAddress', title: '地址' }
+                , { field: 'Remark', title: '备注' }
                 , {
                     fixed: 'right', width: 165, align: 'center', templet: function (d) {
                         var html = "";

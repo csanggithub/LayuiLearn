@@ -1,6 +1,5 @@
 ﻿using Entitys.Models;
 using IServices;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -77,7 +76,7 @@ namespace Web
         private static User GetUser(string account)
         {
             var service = DependencyResolver.Current.GetService<IUserServices>();
-            return service.QueryWhere(a => a.UserCode == account && a.StopFlag == false).FirstOrDefault();
+            return service.QueryWhere(a => a.UserName == account && a.StopFlag == false).FirstOrDefault();
         }
 
         private static List<UserFunction> GetUserFunction(string account)
