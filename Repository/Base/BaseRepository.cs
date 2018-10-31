@@ -1,24 +1,21 @@
-﻿using System;
+﻿using Entitys.DBConfig;
+using IRepository.Base;
+using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading.Tasks;
-using Entitys.DBConfig;
-using IRepository;
-using IRepository.Base;
 
 namespace Repository.Base
 {
-    public class BaseRepository<TEntity>: IBaseRepository<TEntity> where TEntity:class
+    public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
     {
-        MySqlDBContext db { get {
+        private MySqlDBContext db
+        {
+            get
+            {
                 //先从线程缓存CallContext中根据key查找EF容器对象，如果没有则创建,同时保存到缓存中
                 object obj = CallContext.GetData(typeof(MySqlDBContext).FullName);
                 if (obj == null)
@@ -34,7 +31,7 @@ namespace Repository.Base
             }
         }
 
-        DbSet<TEntity> _dbSet;
+        private DbSet<TEntity> _dbSet;
 
         public BaseRepository()
         {
@@ -49,7 +46,7 @@ namespace Repository.Base
         /// <returns></returns>
         public List<TEntity> QueryWhere(Expression<Func<TEntity, bool>> predicate)
         {
-           return _dbSet.Where(predicate).ToList();
+            return _dbSet.Where(predicate).ToList();
         }
 
         /// <summary>
@@ -83,7 +80,7 @@ namespace Repository.Base
         /// <param name="keySelector"></param>
         /// <param name="IsQueryOrderBy"></param>
         /// <returns></returns>
-        public List<TEntity> QueryOrderBy<TKey>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TKey>> keySelector,bool IsQueryOrderBy)
+        public List<TEntity> QueryOrderBy<TKey>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TKey>> keySelector, bool IsQueryOrderBy)
         {
             if (IsQueryOrderBy)
             {
@@ -104,7 +101,7 @@ namespace Repository.Base
         /// <param name="keySelector">排序字段</param>
         /// <param name="IsQueryOrderBy">true为升序 false为降序</param>
         /// <returns></returns>
-        public List<TEntity> QueryByPage<TKey>(int pageIndex,int pagesize,out int rowcount,Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TKey>> keySelector, bool IsQueryOrderBy)
+        public List<TEntity> QueryByPage<TKey>(int pageIndex, int pagesize, out int rowcount, Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TKey>> keySelector, bool IsQueryOrderBy)
         {
             rowcount = _dbSet.Count(predicate);
             if (IsQueryOrderBy)
@@ -114,7 +111,7 @@ namespace Repository.Base
             else
             {
                 return _dbSet.Where(predicate).OrderByDescending(keySelector).Skip((pageIndex - 1) * pagesize).Take(pagesize).ToList();
-            } 
+            }
         }
         /// <summary>
         /// 从第几条开始用于DataTables
@@ -185,12 +182,19 @@ namespace Repository.Base
             db.Entry(model).State = EntityState.Modified;
         }
 
+        public void UpdateEntity(TEntity model)
+        {
+            _dbSet.Attach(model);
+            db.Entry(model).State = EntityState.Modified;
+            //return db.SaveChanges() > 0;
+        }
         #endregion
 
         #region 删除
         public void Delete(TEntity model, bool isadded)
         {
-            if (!isadded) {
+            if (!isadded)
+            {
                 _dbSet.Attach(model);
             }
             _dbSet.Remove(model);
@@ -208,7 +212,7 @@ namespace Repository.Base
         public int SaverChanges()
         {
             return db.SaveChanges();
-            
+
         }
         #endregion
 

@@ -5,16 +5,13 @@ using LinqKit;
 using Services.Base;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services
 {
 
     public partial class UserServices : BaseServices<User>, IUserServices
     {
-        IUserRepository dal;
+        private IUserRepository dal;
 
         public UserServices(IUserRepository dal)
         {
@@ -41,23 +38,41 @@ namespace Services
         /// <param name="endTime"></param>
         /// <param name="total"></param>
         /// <returns></returns>
-        public List<User> GetUsersByWheres(int page,int limit,string provinceCode,string cityCode,string areaCode,string deptCode,string userName,string accountName,string startTime,string endTime,out int total)
+        public List<User> GetUsersByWheresPage(int page, int limit, string provinceCode, string cityCode, string areaCode, string deptCode, string userName, string accountName, string startTime, string endTime, out int total)
         {
             total = 0;
             var _where = PredicateBuilder.New<User>();
             _where = _where.And(m => 1 == 1);
             if (!string.IsNullOrEmpty(provinceCode))
+            {
                 _where = _where.And(m => m.ProvinceCode == provinceCode);
+            }
+
             if (!string.IsNullOrEmpty(cityCode))
+            {
                 _where = _where.And(m => m.CityCode == cityCode);
+            }
+
             if (!string.IsNullOrEmpty(areaCode))
+            {
                 _where = _where.And(m => m.RegionCode == areaCode);
+            }
+
             if (!string.IsNullOrEmpty(deptCode))
+            {
                 _where = _where.And(m => m.DeptCode == deptCode);
+            }
+
             if (!string.IsNullOrEmpty(userName))
+            {
                 _where = _where.And(m => m.RealName == userName);
+            }
+
             if (!string.IsNullOrEmpty(accountName))
+            {
                 _where = _where.And(m => m.UserName == accountName);
+            }
+
             if (!string.IsNullOrEmpty(startTime))
             {
                 var start = Convert.ToDateTime(startTime);

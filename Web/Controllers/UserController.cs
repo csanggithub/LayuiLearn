@@ -91,7 +91,7 @@ namespace Web.Controllers
                 var startTime = Request.Form["startTime"];
                 var endTime = Request.Form["endTime"];
                 int total = 0;
-                var list = _iUserServices.GetUsersByWheres(page, limit, provinceCode, cityCode, areaCode, deptCode, userName, accountName, startTime, endTime, out total);
+                var list = _iUserServices.GetUsersByWheresPage(page, limit, provinceCode, cityCode, areaCode, deptCode, userName, accountName, startTime, endTime, out total);
                 var ro = new ResultObject<User>();
                 ro.code = 0;
                 ro.msg = "";
@@ -132,8 +132,52 @@ namespace Web.Controllers
         /// </summary>
         /// <param name="from"></param>
         /// <returns></returns>
-        public ActionResult SaveUserInfo(FormCollection from)
+        public ActionResult SaveUserInfo(User user)
         {
+            if (!ModelState.IsValid)
+            {
+                return JavaScript("layer.msg('数据内容不正确！');");
+            }
+            try
+            {
+                var list = new List<User>();
+                if (user.Id > 0)
+                {
+                    list = _iUserServices.QueryWhere(m => m.Id != user.Id && (m.IdentityNo == user.IdentityNo || m.Tel == user.Tel));
+                }
+                else
+                {
+                    list = _iUserServices.QueryWhere(m => m.IdentityNo == user.IdentityNo || m.Tel == user.Tel);
+                }
+                var listWhere = list.Where(m => m.IdentityNo == user.IdentityNo);
+                if (listWhere != null || listWhere.Any())
+                {
+                    return JavaScript("layer.msg('已存在相同的身份证号码！');");
+                }
+                var listWhereByTel = list.Where(m => m.Tel == user.Tel);
+                if (listWhereByTel != null || listWhereByTel.Any())
+                {
+                    return JavaScript("layer.msg('已存在相同的手机号码！');");
+                }
+                if (user.Id > 0)
+                {
+                    var userInfo = _iUserServices.QueryWhere(m => m.Id == user.Id).First();
+                    if (userInfo != null)
+                    {
+                        _iUserServices.UpdateEntity(user);
+                    }
+                }
+                else
+                {
+                    _iUserServices.Add(user);
+                }
+                _iUserServices.SaverChanges();
+            }
+            catch (Exception ex)
+            {
+                Log.Error("保存用户信息出现未处理异常", ex.ToString());
+                return JavaScript("layer.msg('保存用户信息出错，请联系管理员！');");
+            }
             return View();
         }
 

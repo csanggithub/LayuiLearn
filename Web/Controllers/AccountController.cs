@@ -1,18 +1,11 @@
 ﻿using Common;
+using Entitys.ViewModels;
 using IServices;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using Web;
-using Entitys.ViewModels;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using Entitys.Models;
-using System.IO;
-using System.Text;
 
 namespace Web.Controllers
 {
@@ -87,7 +80,7 @@ namespace Web.Controllers
                 //var userFunction=_iUserFunctionServices.QueryWhere(a => a.StopFlag == false && a.UserCode == dbUser.Account);
                 //var function=_iFunctionServices.QueryWhere(a => a.StopFlag && userFunction.Any(b => b.StopFlag == false && b.FunctionCode == a.FunctionCode));
                 //LoginUser.WriteUser(dbUser, function);
-                LoginUser.WriteUser(dbUser.UserCode);
+                LoginUser.WriteUser(dbUser.UserName);
                 FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, model.Account, DateTime.Now, DateTime.Now.Add(FormsAuthentication.Timeout), true, FormsAuthentication.FormsCookiePath);
                 HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(ticket))
                 {

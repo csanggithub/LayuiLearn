@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IRepository.Base
 {
-    public interface IBaseRepository<TEntity> where TEntity:class
+    public interface IBaseRepository<TEntity> where TEntity : class
     {
         #region 查询
         /// <summary>
@@ -73,6 +70,8 @@ namespace IRepository.Base
         /// </summary>
         /// <param name="model"></param>
         void Edit(TEntity model);
+
+        void UpdateEntity(TEntity model);
         #endregion
 
         #region 删除

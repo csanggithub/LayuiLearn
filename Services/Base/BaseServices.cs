@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using IRepository.Base;
+﻿using IRepository.Base;
 using IServices.Base;
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace Services.Base
 {
-   public class BaseServices<TEntity>: IBaseServices<TEntity> where TEntity:class
+    public class BaseServices<TEntity> : IBaseServices<TEntity> where TEntity : class
     {
         public IBaseRepository<TEntity> baseDal;
 
@@ -33,7 +30,7 @@ namespace Services.Base
         public List<TEntity> QueryJoin(Expression<Func<TEntity, bool>> predicate, string[] tableNames)
         {
             return baseDal.QueryJoin(predicate, tableNames);
-            
+
         }
 
         /// <summary>
@@ -63,7 +60,7 @@ namespace Services.Base
         public List<TEntity> QueryByPage<TKey>(int pageIndex, int pagesize, out int rowcount, Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TKey>> keySelector, bool IsQueryOrderBy)
         {
 
-            return baseDal.QueryByPage(pageIndex, pagesize,out rowcount, predicate, keySelector, IsQueryOrderBy);
+            return baseDal.QueryByPage(pageIndex, pagesize, out rowcount, predicate, keySelector, IsQueryOrderBy);
 
         }
 
@@ -103,6 +100,11 @@ namespace Services.Base
         {
             baseDal.Edit(model);
         }
+
+        public void UpdateEntity(TEntity model)
+        {
+            baseDal.UpdateEntity(model);
+        }
         #endregion
 
         #region 删除
@@ -122,14 +124,14 @@ namespace Services.Base
         #region 统一提交
         public int SaverChanges()
         {
-           return baseDal.SaverChanges();
+            return baseDal.SaverChanges();
         }
         #endregion
 
         #region 调用存储过程返回一个指定的TResult
         public List<TResult> RunProc<TResult>(string sql, params object[] pamrs)
         {
-           return baseDal.RunProc<TResult>(sql, pamrs);
+            return baseDal.RunProc<TResult>(sql, pamrs);
         }
         #endregion
     }

@@ -1,14 +1,10 @@
 ﻿using Entitys.Models;
 using IServices.Base;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IServices
 {
-    public partial interface IUserServices : IBaseServices<User> 
+    public partial interface IUserServices : IBaseServices<User>
     {
         /// <summary>
         /// 根据条件查询
@@ -25,6 +21,6 @@ namespace IServices
         /// <param name="endTime"></param>
         /// <param name="total"></param>
         /// <returns></returns>
-        List<User> GetUsersByWheres(int page, int limit, string provinceCode, string cityCode, string areaCode, string deptCode, string userName, string accountName, string startTime, string endTime, out int total);
+        List<User> GetUsersByWheresPage(int page, int limit, string provinceCode, string cityCode, string areaCode, string deptCode, string userName, string accountName, string startTime, string endTime, out int total);
     }
 }

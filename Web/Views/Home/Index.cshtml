@@ -44,19 +44,19 @@
         <div id="side-nav">
             <ul id="nav">
                 @*<li>
-            <a _href="../Account/Login">
-                <i class="iconfont">&#xe6a7;</i>
-                <cite>会员列表</cite>
+                        <a _href="../Account/Login">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>会员列表</cite>
 
-            </a>
-        </li>
-        <li>
-            <a _href="../Account/Login">
-                <i class="iconfont">&#xe6a7;</i>
-                <cite>会员列表</cite>
+                        </a>
+                    </li>
+                    <li>
+                        <a _href="../Account/Login">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>会员列表</cite>
 
-            </a>
-        </li>*@
+                        </a>
+                    </li>*@
                 @if (Model != null && Model.Any())
                 {
                     foreach (var m in Model)
@@ -85,7 +85,7 @@
             </ul>
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
-                    <iframe src='@Url.Action("UserListInfo","User")' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
+                    <iframe src='@Url.Action("MyDesktop","Home")' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
                 </div>
             </div>
         </div>
