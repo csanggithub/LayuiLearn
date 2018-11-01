@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace IServices.Base
@@ -7,6 +8,35 @@ namespace IServices.Base
     public interface IBaseServices<TEntity> where TEntity : class
     {
         #region 查询
+
+        /// <summary>
+        /// 查找实体
+        /// </summary>
+        /// <param name="ID">实体主键值</param>
+        /// <returns></returns>
+        TEntity Find(int ID);
+
+        /// <summary>
+        /// 查找实体
+        /// </summary>
+        /// <param name="where">查询Lambda表达式</param>
+        /// <returns></returns>
+        TEntity Find(Expression<Func<TEntity, bool>> where);
+
+        /// <summary>
+        /// 查找实体列表
+        /// </summary>
+        /// <returns></returns>
+        List<TEntity> FindList();
+
+        /// <summary>
+        /// 查找实体列表
+        /// </summary>
+        /// <param name="where">查询Lambda表达式</param>
+        /// <param name="number">获取的记录数量</param>
+        /// <returns></returns>
+        IQueryable<TEntity> FindList(Expression<Func<TEntity, bool>> where, int number);
+
         /// <summary>
         /// 单表查询
         /// </summary>
@@ -76,6 +106,22 @@ namespace IServices.Base
 
         #region 删除
         void Delete(TEntity model, bool isadded);
+
+        /// <summary>
+        /// 删除实体
+        /// </summary>
+        /// <param name="entity">实体</param>
+        /// <param name="isSave">是否立即保存</param>
+        /// <returns>在“isSave”为True时返回受影响的对象的数目，为False时直接返回0</returns>
+        int DeleteEntity(TEntity entity, bool isSave);
+
+        /// <summary>
+        /// 批量删除实体
+        /// </summary>
+        /// <param name="entities">实体集合</param>
+        /// <returns>受影响的对象的数目</returns>
+        int Delete(IEnumerable<TEntity> entities);
+
         #endregion
 
         #region 新增
@@ -85,6 +131,26 @@ namespace IServices.Base
         #region 统一提交
         int SaverChanges();
         #endregion
+
+        /// <summary>
+        /// 记录数
+        /// </summary>
+        /// <returns></returns>
+        int Count();
+
+        /// <summary>
+        /// 记录数
+        /// </summary>
+        /// <param name="predicate">表达式</param>
+        /// <returns></returns>
+        int Count(Expression<Func<TEntity, bool>> predicate);
+
+        /// <summary>
+        /// 记录是否存在
+        /// </summary>
+        /// <param name="predicate">表达式</param>
+        /// <returns></returns>
+        bool IsContains(Expression<Func<TEntity, bool>> predicate);
 
         #region 调用存储过程返回一个指定的TResult
         List<TResult> RunProc<TResult>(string sql, params object[] pamrs);

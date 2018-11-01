@@ -141,6 +141,7 @@ namespace Web.Controllers
             try
             {
                 var list = new List<User>();
+                list = _iUserServices.QueryWhere(m => m.IdentityNo == user.IdentityNo || m.Tel == user.Tel);
                 if (user.Id > 0)
                 {
                     list = _iUserServices.QueryWhere(m => m.Id != user.Id && (m.IdentityNo == user.IdentityNo || m.Tel == user.Tel));

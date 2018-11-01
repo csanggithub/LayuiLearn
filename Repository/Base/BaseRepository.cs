@@ -39,6 +39,48 @@ namespace Repository.Base
         }
 
         #region 查询
+        #region Find 查找实体
+        /// <summary>
+        /// 查找实体
+        /// </summary>
+        /// <param name="ID">实体主键值</param>
+        /// <returns></returns>
+        public TEntity Find(int ID)
+        {
+            return _dbSet.Find(ID);
+        }
+
+        /// <summary>
+        /// 查找实体
+        /// </summary>
+        /// <param name="where">查询Lambda表达式</param>
+        /// <returns></returns>
+        public TEntity Find(Expression<Func<TEntity, bool>> where)
+        {
+            return _dbSet.SingleOrDefault(where);
+        }
+        #endregion
+
+        /// <summary>
+        /// 查找实体列表
+        /// </summary>
+        /// <returns></returns>
+        public List<TEntity> FindList()
+        {
+            return _dbSet.ToList();
+        }
+
+        /// <summary>
+        /// 查找实体列表
+        /// </summary>
+        /// <param name="where">查询Lambda表达式</param>
+        /// <param name="number">获取的记录数量</param>
+        /// <returns></returns>
+        public IQueryable<TEntity> FindList(Expression<Func<TEntity, bool>> where, int number)
+        {
+            return _dbSet.Where(where).Take(number);
+        }
+
         /// <summary>
         /// 单表查询
         /// </summary>
@@ -199,6 +241,30 @@ namespace Repository.Base
             }
             _dbSet.Remove(model);
         }
+
+        /// <summary>
+        /// 删除实体
+        /// </summary>
+        /// <param name="entity">实体</param>
+        /// <param name="isSave">是否立即保存</param>
+        /// <returns>在“isSave”为True时返回受影响的对象的数目，为False时直接返回0</returns>
+        public int DeleteEntity(TEntity entity, bool isSave)
+        {
+            db.Set<TEntity>().Attach(entity);
+            db.Entry<TEntity>(entity).State = EntityState.Deleted;
+            return isSave ? db.SaveChanges() : 0;
+        }
+
+        /// <summary>
+        /// 批量删除实体
+        /// </summary>
+        /// <param name="entities">实体集合</param>
+        /// <returns>受影响的对象的数目</returns>
+        public int Delete(IEnumerable<TEntity> entities)
+        {
+            _dbSet.RemoveRange(entities);
+            return db.SaveChanges();
+        }
         #endregion
 
         #region 新增
@@ -215,6 +281,39 @@ namespace Repository.Base
 
         }
         #endregion
+
+        //记录数
+        #region Count
+
+        /// <summary>
+        /// 记录数
+        /// </summary>
+        /// <returns></returns>
+        public int Count()
+        {
+            return _dbSet.Count();
+        }
+
+        /// <summary>
+        /// 记录数
+        /// </summary>
+        /// <param name="predicate">表达式</param>
+        /// <returns></returns>
+        public int Count(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _dbSet.Count(predicate);
+        }
+        #endregion
+
+        /// <summary>
+        /// 记录是否存在
+        /// </summary>
+        /// <param name="predicate">表达式</param>
+        /// <returns></returns>
+        public bool IsContains(Expression<Func<TEntity, bool>> predicate)
+        {
+            return Count(predicate) > 0;
+        }
 
         #region 调用存储过程返回一个指定的TResult
         public List<TResult> RunProc<TResult>(string sql, params object[] pamrs)
