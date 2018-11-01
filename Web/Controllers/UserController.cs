@@ -5,6 +5,7 @@ using IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
 namespace Web.Controllers
@@ -151,6 +152,10 @@ namespace Web.Controllers
                 if (string.IsNullOrWhiteSpace(user.IdentityNo))
                 {
                     return JavaScript("layer.msg('请填写身份证号码后，再保存');");
+                }
+                if (string.IsNullOrWhiteSpace(user.Tel) && Regex.IsMatch(user.Tel, @"^[1]+[2,3,4,5,6,7,8,9]+\d{9}"))
+                {
+                    return JavaScript("layer.msg('请填写有效的手机号码');");
                 }
                 var ContainsList = new List<User>();
                 var list = _iUserServices.QueryWhere(m => m.IdentityNo == user.IdentityNo || m.Tel == user.Tel);
