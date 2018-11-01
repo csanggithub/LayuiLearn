@@ -140,29 +140,41 @@ namespace Web.Controllers
             }
             try
             {
-                var list = new List<User>();
-                list = _iUserServices.QueryWhere(m => m.IdentityNo == user.IdentityNo || m.Tel == user.Tel);
+                if (string.IsNullOrWhiteSpace(user.UserName))
+                {
+                    return JavaScript("layer.msg('请填写用户名后，再保存');");
+                }
+                if (string.IsNullOrWhiteSpace(user.RealName))
+                {
+                    return JavaScript("layer.msg('请填写姓名后，再保存');");
+                }
+                if (string.IsNullOrWhiteSpace(user.IdentityNo))
+                {
+                    return JavaScript("layer.msg('请填写身份证号码后，再保存');");
+                }
+                var ContainsList = new List<User>();
+                var list = _iUserServices.QueryWhere(m => m.IdentityNo == user.IdentityNo || m.Tel == user.Tel);
                 if (user.Id > 0)
                 {
-                    list = _iUserServices.QueryWhere(m => m.Id != user.Id && (m.IdentityNo == user.IdentityNo || m.Tel == user.Tel));
+                    ContainsList = list.Where(m => m.Id != user.Id && (m.IdentityNo == user.IdentityNo || m.Tel == user.Tel)).ToList();
                 }
                 else
                 {
-                    list = _iUserServices.QueryWhere(m => m.IdentityNo == user.IdentityNo || m.Tel == user.Tel);
+                    ContainsList = list.Where(m => m.IdentityNo == user.IdentityNo || m.Tel == user.Tel).ToList();
                 }
-                var listWhere = list.Where(m => m.IdentityNo == user.IdentityNo);
+                var listWhere = ContainsList.Where(m => m.IdentityNo == user.IdentityNo);
                 if (listWhere != null || listWhere.Any())
                 {
                     return JavaScript("layer.msg('已存在相同的身份证号码！');");
                 }
-                var listWhereByTel = list.Where(m => m.Tel == user.Tel);
+                var listWhereByTel = ContainsList.Where(m => m.Tel == user.Tel);
                 if (listWhereByTel != null || listWhereByTel.Any())
                 {
                     return JavaScript("layer.msg('已存在相同的手机号码！');");
                 }
                 if (user.Id > 0)
                 {
-                    var userInfo = _iUserServices.QueryWhere(m => m.Id == user.Id).First();
+                    var userInfo = list.Where(m => m.Id == user.Id).First();
                     if (userInfo != null)
                     {
                         _iUserServices.UpdateEntity(user);

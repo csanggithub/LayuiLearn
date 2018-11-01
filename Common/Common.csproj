@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CryptTools.cs" />
+    <Compile Include="DataConvert.cs" />
     <Compile Include="DESTools.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\Log.cs" />
