@@ -137,25 +137,25 @@ namespace Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return JavaScript("layer.msg('数据内容不正确！');");
+                return Json(new { IsSuccess = false, Msg = "数据内容不正确" }, JsonRequestBehavior.DenyGet);
             }
             try
             {
                 if (string.IsNullOrWhiteSpace(user.UserName))
                 {
-                    return JavaScript("layer.msg('请填写用户名后，再保存');");
+                    return Json(new { IsSuccess = false, Msg = "请填写用户名后，再保存" }, JsonRequestBehavior.DenyGet);
                 }
                 if (string.IsNullOrWhiteSpace(user.RealName))
                 {
-                    return JavaScript("layer.msg('请填写姓名后，再保存');");
+                    return Json(new { IsSuccess = false, Msg = "请填写姓名后，再保存" }, JsonRequestBehavior.DenyGet);
                 }
                 if (string.IsNullOrWhiteSpace(user.IdentityNo))
                 {
-                    return JavaScript("layer.msg('请填写身份证号码后，再保存');");
+                    return Json(new { IsSuccess = false, Msg = "请填写身份证号码后，再保存" }, JsonRequestBehavior.DenyGet);
                 }
                 if (string.IsNullOrWhiteSpace(user.Tel) && Regex.IsMatch(user.Tel, @"^[1]+[2,3,4,5,6,7,8,9]+\d{9}"))
                 {
-                    return JavaScript("layer.msg('请填写有效的手机号码');");
+                    return Json(new { IsSuccess = false, Msg = "请填写有效的手机号码" }, JsonRequestBehavior.DenyGet);
                 }
                 var ContainsList = new List<User>();
                 var list = _iUserServices.QueryWhere(m => m.IdentityNo == user.IdentityNo || m.Tel == user.Tel);
@@ -167,15 +167,15 @@ namespace Web.Controllers
                 {
                     ContainsList = list.Where(m => m.IdentityNo == user.IdentityNo || m.Tel == user.Tel).ToList();
                 }
-                var listWhere = ContainsList.Where(m => m.IdentityNo == user.IdentityNo);
-                if (listWhere != null || listWhere.Any())
+                var listWhere = ContainsList.Where(m => m.IdentityNo == user.IdentityNo).ToList();
+                if (listWhere == null || listWhere.Any())
                 {
-                    return JavaScript("layer.msg('已存在相同的身份证号码！');");
+                    return Json(new { IsSuccess = false, Msg = "已存在相同的身份证号码" }, JsonRequestBehavior.DenyGet);
                 }
                 var listWhereByTel = ContainsList.Where(m => m.Tel == user.Tel);
-                if (listWhereByTel != null || listWhereByTel.Any())
+                if (listWhereByTel == null || listWhereByTel.Any())
                 {
-                    return JavaScript("layer.msg('已存在相同的手机号码！');");
+                    return Json(new { IsSuccess = false, Msg = "已存在相同的手机号码" }, JsonRequestBehavior.DenyGet);
                 }
                 if (user.Id > 0)
                 {
@@ -190,13 +190,13 @@ namespace Web.Controllers
                     _iUserServices.Add(user);
                 }
                 _iUserServices.SaverChanges();
+                return Json(new { IsSuccess = true, Msg = "添加成功" }, JsonRequestBehavior.DenyGet);
             }
             catch (Exception ex)
             {
                 Log.Error("保存用户信息出现未处理异常", ex.ToString());
-                return JavaScript("layer.msg('保存用户信息出错，请联系管理员！');");
+                return Json(new { IsSuccess = false, Msg = "保存用户信息出错，请联系管理员！" }, JsonRequestBehavior.DenyGet);
             }
-            return View();
         }
 
         public ActionResult Index()

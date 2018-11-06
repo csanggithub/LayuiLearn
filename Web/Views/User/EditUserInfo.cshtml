@@ -9,14 +9,14 @@
                 <span class="x-red">*</span>账号：
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="accountCode" name="accountCode" required="" lay-verify="required"
+                <input type="text" id="UserName" name="UserName" required="" lay-verify="required"
                        autocomplete="off" class="layui-input" placeholder="请输入登录账号">
             </div>
             <label for="username" class="layui-form-label">
                 <span class="x-red">*</span>姓名：
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="userName" name="userName" required="" lay-verify="required"
+                <input type="text" id="RealName" name="RealName" required="" lay-verify="required"
                        autocomplete="off" class="layui-input" placeholder="请输入姓名">
             </div>
             <label for="username" class="layui-form-label">
@@ -97,7 +97,7 @@
         <div class="layui-form-item">
             <label for="L_repass" class="layui-form-label">
             </label>
-            <button class="layui-btn" lay-filter="add" lay-submit="">增加</button>
+            <button class="layui-btn" lay-filter="add" lay-submit="" id="save">保存</button>
         </div>
     </form>
 </div>
@@ -125,26 +125,27 @@
 
         //监听提交
 
-        form.on('submit(add)', function (data) {
+        form.on('submit(add)', function (datas) {
             $.ajax({
                 type: "POST",
 		        url: '@Url.Action("SaveUserInfo", "User")',
-                data: data,
+                data: datas.field,
 		        async: false,
 		        datatype: "json",//"xml", "html", "script", "json", "jsonp", "text".
 		        beforeSend: function () { },
 		        success: function (result) {
-                    if (result) {
+                    if (result.IsSuccess==true) {
                         layer.alert("增加成功", { icon: 6 }, function () {
                             // 获得frame索引
                             var index = parent.layer.getFrameIndex(window.name);
+                            window.parent.$("#sreach").click();
                             //关闭当前frame
                             parent.layer.close(index);
                         });
                     }
                     else {
                         layer.alert("增加失败", { icon: 6 }, function () {
-
+                            alert("增加失败");
                         });
                     }
 		        },
@@ -155,10 +156,26 @@
 		        error: function () {
 		        }
 	        });
-            return false;
+            //layer.alert("增加成功", { icon: 6 }, function () {
+            //    // 获得frame索引
+            //    var index = parent.layer.getFrameIndex(window.name);
+            //    window.parent.$("#sreach").click();
+            //    //关闭当前frame
+            //    parent.layer.close(index);
+            //});
+            //return false;
         });
 
+        //$('#save').click(function () {
+        //    var val = "123321";
+        //    if (val === '') {
+        //        parent.layer.msg('请填写标记');
+        //        return;
+        //    }
+        //    parent.layer.msg('您将标记 [ ' + val + ' ] 成功传送给了父窗口');
 
+        //    parent.layer.close(index);
+        //});
     });
 </script>
 
